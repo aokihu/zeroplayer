@@ -333,6 +333,8 @@ export GST_DEBUG=playbin:4
 - [GUPnP Documentation](https://gnome.pages.gitlab.gnome.org/gupnp/docs/)
 - [GStreamer Playbin3 Documentation](https://gstreamer.freedesktop.org/documentation/playback/playbin3.html?gi-language=c)
 - [DLNA/UPnP Specifications](https://spirespark.com/dlna/guidelines)
+- [Implementing UPnP devices](https://gnome.pages.gitlab.gnome.org/gupnp/docs/server-tutorial.html)
+- [Interacting with remote UPnP devices](https://gnome.pages.gitlab.gnome.org/gupnp/docs/client-tutorial.html)
 
 ## 贡献指南
 
