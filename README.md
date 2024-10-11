@@ -1,11 +1,12 @@
 # ZeroPlayer
 
-这是一个基于 GUPnP、GLib 和 GStreamer 的 UPnP 音频渲染器项目，旨在为 UPnP 控制点（如智能手机或其他媒体控制软件）提供 HTTP 音频流的播放能力。此项目使用 `playbin` 作为GStreamer 的核心播放组件，实现了包括播放、暂停、停止和跳转（seek）在内的多种功能。
+这是一个基于 GUPnP、GLib 和 GStreamer 的 UPnP 音频渲染器项目，旨在为 UPnP 控制点（如智能手机或其他媒体控制软件）提供 HTTP 音频流的播放能力。此项目使用 `playbin` 作为 GStreamer 的核心播放组件，实现了包括播放、暂停、停止和跳转（seek）在内的多种功能。
 
 ## 目录
 
 - [项目概述](#项目概述)
 - [功能特性](#功能特性)
+- [DLNA 必须实现的用户功能](#dlna-必须实现的用户功能)
 - [项目目录结构](#项目目录结构)
 - [安装和配置](#安装和配置)
   - [Mac 环境配置](#mac-环境配置)
@@ -40,6 +41,19 @@
 - **音频跳转（Seek）功能**：支持对正在播放的媒体进行精确跳转。
 - **事件处理**：处理 UPnP 控制点发送的各种控制命令，包括音量控制和状态查询。
 
+## DLNA 必须实现的用户功能
+
+在 DLNA 音频渲染器中，必须实现以下用户功能：
+
+1. **播放控制**：允许用户通过控制点应用（如智能手机或 PC）来远程启动音频播放。
+2. **暂停和停止**：提供对播放内容进行暂停和停止的操作。
+3. **音量控制**：允许用户调整渲染器的音量，包括静音功能。
+4. **跳转（Seek）功能**：支持用户在音频中进行快进或后退，直接跳转到指定时间。
+5. **播放状态报告**：提供当前播放状态的信息（例如播放中、暂停、停止）以及进度（播放时间）。
+6. **设备发现和注册**：确保渲染器可以被 DLNA 控制点设备发现，并在网络中注册。
+
+这些功能确保用户能够以直观的方式与音频渲染器交互，实现对播放内容的全方位控制。
+
 ## 项目目录结构
 
 ```
@@ -63,214 +77,125 @@ zeroplayer/
 │   ├── upnp_control.h              # UPnP 控制模块头文件
 │   ├── gstreamer_player.h          # GStreamer 播放模块头文件
 │   ├── utils.h                     # 工具函数模块头文件
-│   ├── cli_parser.h                # 命令行参数解析头文件
-│   ├── app.h                       # 应用层级上下文结构头文件
+│   ├── cli_parser.h                # 命令行参数解析模块头文件
 │
-├── docs/
-│   └── README.md                   # 项目说明文档
+├── tests/                          # 测试代码目录
+│   ├── unit/                       # 单元测试代码
+│   ├── integration/                # 集成测试代码
 │
-├── scripts/
-│   ├── setup.sh                    # 环境安装脚本
-│   └── build.sh                    # 项目构建脚本
-│
-├── tests/                          # 测试相关文件
-│   ├── unit/                       # 单元测试模块
-│   │   ├── test_playback.c         # 播放功能测试代码
-│   │   ├── test_upnp.c             # UPnP 功能测试代码
-│   │   ├── test_cli_parser.c       # 命令行参数解析测试代码
-│   └── integration/                # 集成测试模块
-│       ├── test_full_flow.c        # 全流程测试代码
-│
-└── Makefile                        # 项目构建脚本
+└── docs/                           # 文档目录
+    ├── README.md                   # 项目说明文档
+    └── guide.md                    # 使用指南
 ```
 
 ## 安装和配置
 
 ### Mac 环境配置
 
-在 macOS 平台上，可以使用 Homebrew 来安装所需的依赖库。首先，确保已安装 Homebrew，然后执行以下命令：
-
-```bash
-# 更新 Homebrew
-brew update
-
-# 安装必要的依赖库
-brew install gupnp glib gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly
-```
+1. 安装必要依赖：
+   ```bash
+   brew install gupnp gstreamer gst-plugins-base gst-plugins-good glib
+   ```
+2. 克隆项目并编译：
+   ```bash
+   git clone https://github.com/yourusername/zeroplayer.git
+   cd zeroplayer
+   make
+   ```
 
 ### Linux 环境配置
 
-在安装之前，请确保您的系统中安装了必要的开发库和工具，可以使用以下命令进行安装：
-
-```bash
-sudo apt-get update
-sudo apt-get install libgupnp-1.0-dev libglib2.0-dev gstreamer1.0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly
-```
-
-### 项目构建
-
-使用 `Makefile` 来构建项目：
-
-```bash
-make
-```
-
-### 运行程序
-
-编译完成后，运行生成的可执行文件：
-
-```bash
-./zeroplay
-```
+1. 安装必要依赖：
+   ```bash
+   sudo apt-get install libgupnp-1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good libglib2.0-dev
+   ```
+2. 克隆项目并编译：
+   ```bash
+   git clone https://github.com/yourusername/zeroplayer.git
+   cd zeroplayer
+   make
+   ```
 
 ## 使用说明
 
-1. 启动程序后，ZeroPlayer 会注册到局域网内的 UPnP 控制点。
-2. 可以使用支持 UPnP 的控制点软件（如 VLC、Foobar2000、BubbleUPnP 等）对设备进行控制。
-3. 控制点可以发送播放、暂停、停止、跳转和音量调节等命令。
+运行 ZeroPlayer：
+
+```bash
+./zeroplayer
+```
 
 ## 命令行参数
 
+- `-d` 或 `--debug`：启用调试模式，输出详细日志。
+- `-c <path>` 或 `--config <path>`：指定配置文件路径。
+- `-h` 或 `--help`：显示帮助信息。
+- `--output-alsa-device` : 设置ALSA设备
+- `-n` 或 `--name` : 设置设备显示的名称
+- `-v` 或 `--version` : 打印软件当前版本信息
 
 ## 用户操作
 
-DLNA 音频渲染器需要实现以下用户操作：
-
-1. **播放**：开始播放指定的音频内容。
-2. **暂停**：暂停当前播放的音频。
-3. **停止**：停止音频播放，并将播放位置重置为起始位置。
-4. **跳转（Seek）**：跳转到音频中的特定位置。例如，可以跳转到音频的某个时间点（如 "00:05:30"）。
-5. **音量控制**：调整音频的输出音量，包括设置音量大小和静音操作。
-6. **状态查询**：查询当前播放状态，包括当前播放位置、播放进度、总时长等。
+通过 UPnP 控制点（例如智能手机上的控制应用程序）可以对 ZeroPlayer 进行操作，例如播放、暂停、停止和跳转到指定时间。
 
 ## 模块详细说明
 
 ### UPnP 服务模块
 
-- **文件**: `src/core/upnp/upnp_service.c`
-- **功能**: 处理 UPnP 设备的注册、控制命令的解析和响应。
-- **实现细节**: 通过 GUPnP 实现 AVTransport 和 RenderingControl 服务，使用回调函数响应控制点的操作请求。
+负责处理 UPnP 设备的发现和注册，响应来自控制点的控制命令。主要使用 GUPnP 库实现。
 
 ### GStreamer 播放模块
 
-- **文件**: `src/playback/gstreamer_player.c`
-- **功能**: 管理媒体播放，支持播放、暂停、停止和跳转等功能，支持设置 ALSA 音频输出设备。
-- **实现细节**: 使用 `playbin` 作为 GStreamer 管道核心，通过 `gst_element_seek` 实现跳转（seek）功能，增加了通过命令行参数设置输出设备的功能。
+基于 GStreamer 的 `playbin` 组件实现，处理音频流的播放、暂停、停止和跳转。
 
 ### GLib 主循环模块
 
-- **功能**: 使用 GLib 提供的主循环管理整个项目的事件处理，使得网络事件和媒体播放控制都能异步处理。
+使用 GLib 的主循环机制管理整个应用的事件处理，确保 UPnP 消息和 GStreamer 状态变更能够及时响应。
 
 ### 命令行参数模块
 
-- **文件**: `src/cli/cli_parser.c`
-- **功能**: 解析命令行参数，包括音频输出设备的配置。
-- **实现细节**: 使用 GLib 的 `GOptionContext` 来处理命令行参数，支持设置 `--output-alsa-device` 参数以指定 ALSA 音频输出设备。
+用于解析用户通过命令行传入的参数，例如启用调试模式或指定配置文件路径。
 
 ### 应用层级上下文结构模块
 
-- **文件**: `includes/app.h`
-- **功能**: 提供应用层级的上下文结构体，用于在回调函数之间传递状态和配置信息。
-- **实现细节**: 该模块定义了一个全局的上下文结构体，包含 GUPnP 上下文、GStreamer 播放器和其他共享状态，以便在不同模块中共享信息。
-
-#### 应用层级上下文结构体示例代码
-
-```c
-#ifndef APP_H
-#define APP_H
-
-#include <gupnp.h>
-#include <gst/gst.h>
-
-typedef struct {
-    GUPnPContext *upnp_context;
-    GstElement *playbin;
-    gchar *output_device;
-} AppContext;
-
-#endif // APP_H
-```
+定义了应用的上下文结构，用于保存全局状态，包括 GUPnP 设备对象、GStreamer 播放器对象和主循环对象。
 
 ## 模块代码示例
 
 ### main.c 示例
 
-以下是 `main.c` 的示例代码，展示如何初始化主循环并调用核心模块：
+主入口文件，负责初始化应用上下文、启动 GLib 主循环并注册 UPnP 设备。
 
 ```c
-#include <glib.h>
-#include <gupnp.h>
-#include "upnp_service.h"
-#include "gstreamer_player.h"
-#include "cli_parser.h"
-#include "app.h"
-
 int main(int argc, char *argv[]) {
-    // 创建应用上下文
-    AppContext app_context = {0};
-
-    // 初始化 GLib 主循环
-    GMainLoop *loop = g_main_loop_new(NULL, FALSE);
-    app_context.upnp_context = gupnp_context_new(NULL, 0, NULL);
-    if (!app_context.upnp_context) {
-        g_printerr("Failed to create GUPnP context\n");
+    // 初始化应用上下文
+    AppContext *app_context = init_app_context(argc, argv);
+    if (app_context == NULL) {
         return -1;
     }
 
-    // 解析命令行参数
-    parse_command_line_arguments(argc, argv, &app_context.output_device);
+    // 启动主循环
+    g_main_loop_run(app_context->main_loop);
 
-    // 设置输出设备
-    if (app_context.output_device) {
-        set_audio_output_device(app_context.output_device);
-    }
-
-    // 初始化 UPnP 服务
-    if (!init_upnp_service(app_context.upnp_context)) {
-        g_printerr("Failed to initialize UPnP service\n");
-        return -1;
-    }
-
-    // 启动播放模块
-    if (!init_gstreamer_player()) {
-        g_printerr("Failed to initialize GStreamer player\n");
-        return -1;
-    }
-
-    // 运行主循环
-    g_main_loop_run(loop);
-
-    // 清理资源
-    g_main_loop_unref(loop);
-    g_object_unref(app_context.upnp_context);
-
+    // 释放资源
+    cleanup_app_context(app_context);
     return 0;
 }
 ```
 
 ### UPnP 服务回调实现
 
-以下是 `upnp_service.c` 中的回调函数示例，展示如何响应播放命令：
+实现了对控制点命令的回调处理，包括播放、暂停、停止和跳转请求。
 
 ```c
-#include "upnp_service.h"
-#include "gstreamer_player.h"
-#include "app.h"
-
-void on_play_command(GUPnPService *service, GUPnPServiceAction *action, gpointer user_data) {
+void on_play_request(GUPnPService *service, gpointer user_data) {
     AppContext *app_context = (AppContext *)user_data;
-    // 调用 GStreamer 播放模块中的播放函数
-    if (start_playback(app_context->playbin)) {
-        gupnp_service_action_return(action);
-    } else {
-        gupnp_service_action_return_error(action, 501, "Playback failed");
-    }
+    gstreamer_player_play(app_context->player);
 }
 ```
 
 ## Seek 功能实现
 
-`playbin` 组件支持媒体跳转（seek）功能。在项目中，通过 `gst_element_seek` 函数实现对媒体播放位置的跳转。实现过程包括：
+通过调用 GStreamer 的 `gst_element_seek` 函数实现对媒体播放位置的跳转。实现过程包括：
 
 1. **解析控制点发送的跳转时间**：如 "00:05:30" 转换为纳秒。
 2. **执行跳转操作**：调用 `gst_element_seek` 进行跳转。
@@ -324,11 +249,11 @@ export GST_DEBUG=playbin:4
 
 - **GDB**: 用于调试程序的崩溃或异常。
   ```bash
-  gdb ./zeroplay
+  gdb ./zeroplayer
   ```
 - **Valgrind**: 用于检查内存泄漏和内存访问错误。
   ```bash
-  valgrind ./zeroplay
+  valgrind ./zeroplayer
   ```
 - **System Log**: 通过查看系统日志 (`/var/log/syslog` 或 `journalctl`) 获取与网络和系统相关的问题。
 
