@@ -8,7 +8,9 @@
         "/usr/local/lib/glib-2.0/include",
         "/usr/local/include/gstreamer-1.0",
         "/usr/local/lib/gstreamer-1.0/include",
-        "/usr/local/include/gupnp-1.6"
+        "/usr/local/include/gupnp-1.6",
+        "/usr/local/include/gssdp-1.6/",
+        "/usr/local/include/libsoup-3.0"
       ]
     }
   ],
