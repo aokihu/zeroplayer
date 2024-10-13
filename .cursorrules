@@ -17,3 +17,14 @@
 [规则]
 - 当项目代码发生更改时,自动更新includes/version.h文件中的版本号
 - gupnp版本使用1.6.0
+- 使用`autoreconf`生成Makefile
+
+[Mac开发环境配置]
+- 使用`brew`作为包管理工具
+- 使用`pkg-config`作为编译时依赖库查找工具
+- 使用`cursor`作为IDE开发工具
+- 使用`.vscode`目录作为VSCode开发配置
+- 使用`c_cpp_properties.json`针对MacOS开发环境进行配置
+- `gupnp`版本不低于`1.6.0`
+- `glib`版本不低于`2.74.0`
+- `gstreamer`版本不低于`1.22.0`
