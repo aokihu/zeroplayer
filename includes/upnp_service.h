@@ -2,18 +2,20 @@
 #define UPNP_SERVICE_H
 
 #include <glib.h>
-#include "app_context.h"
 
 // UPnP 上下文结构体
-typedef struct UPnPContext UPnPContext;
+typedef struct
+{
+} UPnPContext;
 
+struct AppContext; // Forward declaration
 /**
  * @brief 初始化 UPnP 服务
  *
  * @param app_context 应用程序上下文
  * @return UPnPContext* UPnP 上下文指针，如果初始化失败则返回 NULL
  */
-UPnPContext *upnp_service_init(AppContext *app_context);
+UPnPContext *upnp_service_init(struct AppContext *app_context);
 
 /**
  * @brief 清理 UPnP 服务

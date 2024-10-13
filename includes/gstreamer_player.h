@@ -5,7 +5,9 @@
 #include <gst/gst.h>
 
 // GStreamer播放器结构体
-typedef struct GstreamerPlayer GstreamerPlayer;
+typedef struct _GstreamerPlayer
+{
+} GstreamerPlayer;
 
 /**
  * @brief 创建新的GStreamer播放器实例
@@ -96,4 +98,4 @@ gboolean gstreamer_player_set_volume(GstreamerPlayer *player, gdouble volume);
  */
 gdouble gstreamer_player_get_volume(GstreamerPlayer *player);
 
-#endif /* GSTREAMER_PLAYER_H */
+#endif

@@ -15,8 +15,17 @@
 
 static gboolean initialize_app(AppContext *app_context, int argc, char *argv[])
 {
-  // 初始化GStreamer
-  gst_init(&argc, &argv);
+  // 初始化 GStreamer，并检查初始化是否成功
+  GError *error = NULL;
+  if (!gst_init_check(&argc, &argv, &error))
+  {
+    g_printerr("GStreamer initialization failed: %s\n", error->message);
+    g_error_free(error);
+    return FALSE;
+  }
+
+  // 初始化 CliOptions 结构体
+  memset(&app_context->cli_options, 0, sizeof(CliOptions));
 
   // 解析命令行参数
   if (!parse_cli_options(argc, argv, &app_context->cli_options))

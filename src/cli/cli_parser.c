@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
-static GOptionEntry entries[] = {
+static const GOptionEntry entries[] = {
     {"debug", 'd', 0, G_OPTION_ARG_NONE, NULL, "Enable debug mode", NULL},
     {"config", 'c', 0, G_OPTION_ARG_FILENAME, NULL, "Specify config file path", "PATH"},
     {"output-alsa-device", 0, 0, G_OPTION_ARG_STRING, NULL, "Set ALSA device", "DEVICE"},
@@ -26,17 +26,21 @@ gboolean parse_cli_options(int argc, char *argv[], CliOptions *options)
   // 初始化选项结构体
   memset(options, 0, sizeof(CliOptions));
 
-  // 创建选项上下文
-  context = g_option_context_new("- ZeroPlayer UPnP Audio Renderer");
-  g_option_context_add_main_entries(context, entries, NULL);
-  g_option_context_set_help_enabled(context, TRUE);
+  // 创建 entries[] 的局部副本
+  GOptionEntry local_entries[G_N_ELEMENTS(entries)];
+  memcpy(local_entries, entries, sizeof(entries));
 
   // 设置选项数据指针
-  entries[0].arg_data = &options->debug_mode;
-  entries[1].arg_data = &options->config_file_path;
-  entries[2].arg_data = &options->alsa_device;
-  entries[3].arg_data = &options->device_name;
-  entries[4].arg_data = &options->show_version;
+  local_entries[0].arg_data = &options->debug_mode;
+  local_entries[1].arg_data = &options->config_file_path;
+  local_entries[2].arg_data = &options->alsa_device;
+  local_entries[3].arg_data = &options->device_name;
+  local_entries[4].arg_data = &options->show_version;
+
+  // 创建选项上下文
+  context = g_option_context_new("- ZeroPlayer UPnP Audio Renderer");
+  g_option_context_add_main_entries(context, local_entries, NULL);
+  g_option_context_set_help_enabled(context, TRUE);
 
   // 解析命令行选项
   if (!g_option_context_parse(context, &argc, &argv, &error))

@@ -5,14 +5,22 @@ CC = gcc
 CFLAGS = -Wall -Wextra -g $(shell pkg-config --cflags glib-2.0 gstreamer-1.0 gupnp-1.6) -I/usr/local/opt/icu4c/include
 LDFLAGS = $(shell pkg-config --libs glib-2.0 gstreamer-1.0 gupnp-1.6) -L/usr/local/opt/icu4c/lib -licuuc
 
-
-# 源文件目录
+# 目录设置
 SRC_DIR = src
 INCLUDE_DIR = includes
+OBJ_DIR = obj
+CLI_DIR = $(SRC_DIR)/cli
+PLAYBACK_DIR = $(SRC_DIR)/playback
+UPNP_DIR = $(SRC_DIR)/upnp
 
 # 源文件
-SOURCES = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/cli/*.c)
-OBJECTS = $(SOURCES:.c=.o)
+SOURCES = $(wildcard $(SRC_DIR)/*.c) \
+          $(wildcard $(CLI_DIR)/*.c) \
+          $(wildcard $(PLAYBACK_DIR)/*.c) \
+          $(wildcard $(UPNP_DIR)/*.c)
+
+# 目标文件
+OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SOURCES))
 
 # 可执行文件名
 TARGET = zeroplayer
@@ -20,8 +28,11 @@ TARGET = zeroplayer
 # 默认目标
 all: $(TARGET)
 
+# 创建obj目录及其子目录
+$(shell mkdir -p $(OBJ_DIR) $(OBJ_DIR)/cli $(OBJ_DIR)/playback $(OBJ_DIR)/upnp)
+
 # 编译规则
-%.o: %.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 
 # 链接规则
@@ -30,7 +41,7 @@ $(TARGET): $(OBJECTS)
 
 # 清理规则
 clean:
-	rm -f $(OBJECTS) $(TARGET)
+	rm -rf $(OBJ_DIR) $(TARGET)
 
 # 安装规则
 install: $(TARGET)

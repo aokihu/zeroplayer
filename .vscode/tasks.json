@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "构建主程序",
+      "type": "shell",
+      "command": "make",
+      "args": [],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "运行主程序",
+      "type": "shell",
+      "command": "./zeroplayer",
+      "args": [],
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}

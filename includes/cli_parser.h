@@ -3,7 +3,7 @@
 
 #include <glib.h>
 
-typedef struct
+typedef struct _CliOptions
 {
   gboolean debug_mode;
   gchar *config_file_path;
