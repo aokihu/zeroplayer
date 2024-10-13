@@ -104,16 +104,6 @@ zeroplayer/
    cd zeroplayer
    make
    ```
-3. Mac开发环境配置:
-  1. 使用`brew`作为包管理工具
-  2. 使用`pkg-config`作为编译时依赖库查找工具
-  3. 使用`cursor`作为IDE开发工具
-  4. 使用`.vscode`目录作为VSCode开发配置
-  5. 使用`c_cpp_properties.json`针对MacOS开发环境进行配置
-  6. 使用`autoreconf`生成Makefile
-  7. `gupnp`版本不低于`1.6.0`
-  8. `glib`版本不低于`2.0.0`
-  9. `gstreamer`版本不低于`1.22.0`
 
 ### Linux 环境配置
 
