@@ -12,6 +12,11 @@
         "/usr/local/include/gssdp-1.6/",
         "/usr/local/include/libsoup-3.0"
       ]
+    }, {
+      "name": "Linux",
+      "includePath": [
+        "${workspaceFolder}/**"
+      ]
     }
   ],
   "version": 4
