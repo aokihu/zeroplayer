@@ -10,11 +10,10 @@
 
 #include <glib.h>
 #include <gst/gst.h>
-#include <libgupnp/gupnp.h>
 #include "cli_parser.h"
+#include "upnp_service.h"
 // #include "gstreamer_player.h"
 
-struct UPnPContext;     // Forward declaration
 struct GstreamerPlayer; // Forward declaration
 
 /**
@@ -23,17 +22,12 @@ struct GstreamerPlayer; // Forward declaration
  */
 typedef struct _AppContext
 {
-    GMainLoop *main_loop;                /**< GLib 主循环对象 */
-    GUPnPContext *gupnp_context;         /**< GUPnP 上下文对象 */
-    GUPnPRootDevice *root_device;        /**< GUPnP 根设备对象 */
-    GUPnPServiceInfo *av_transport;      /**< AV Transport 服务对象 */
-    GUPnPServiceInfo *rendering_control; /**< Rendering Control 服务对象 */
-    struct GstreamerPlayer *player;      /**< GStreamer 播放器对象 */
-    gchar *device_name;                  /**< 设备显示名称 */
-    gchar *alsa_device;                  /**< ALSA 设备名称 */
-    gboolean debug_mode;                 /**< 调试模式标志 */
-    CliOptions cli_options;              /**< 命令行选项 */
-    struct UPnPContext *upnp_context;    /**< UPnP 服务上下文 */
+    GMainLoop *mainLoop;            /**< GLib 主循环对象 */
+    struct GstreamerPlayer *player; /**< GStreamer 播放器对象 */
+    gchar *alsaDevice;              /**< ALSA 设备名称 */
+    gboolean debugMode;             /**< 调试模式标志 */
+    CliOptions cliOptions;          /**< 命令行选项 */
+    UPnPContext *upnpContext;       /**< UPnP 服务上下文 */
 } AppContext;
 
 /**
@@ -42,10 +36,10 @@ typedef struct _AppContext
  * @param argv 命令行参数数组
  * @return 初始化后的 AppContext 指针，失败时返回 NULL
  */
-AppContext *init_app_context(int argc, char *argv[]);
+AppContext *initAppContext(int argc, char *argv[]);
 
 /**
  * @brief 清理应用程序上下文，释放资源
  * @param context 要清理的 AppContext 指针
  */
-void cleanup_app_context(AppContext *context);
+void cleanupAppContext(AppContext *context);

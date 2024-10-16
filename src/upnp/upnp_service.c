@@ -1,16 +1,24 @@
 #include "upnp_service.h"
 #include <stdlib.h>
 
-// 初始化UPnP服务
+/**
+ * @brief Initialize UPnP service
+ *
+ * @param app_context Application context pointer
+ * @return UPnPContext* UPnP context pointer
+ */
 UPnPContext *upnp_service_init(struct AppContext *app_context)
 {
-  // 简单的占位实现
   UPnPContext *context = (UPnPContext *)malloc(sizeof(UPnPContext));
 
   return context;
 }
 
-// 清理UPnP服务
+/**
+ * @brief Clean up UPnP service
+ *
+ * @param upnp_context UPnP context pointer
+ */
 void upnp_service_cleanup(UPnPContext *upnp_context)
 {
   // 简单的占位实现

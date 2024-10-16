@@ -2,13 +2,21 @@
 #define UPNP_SERVICE_H
 
 #include <glib.h>
+#include <libgupnp/gupnp.h>
 
 // UPnP 上下文结构体
 typedef struct
 {
+  GUPnPRootDevice *rootDevice;   /**< GUPnP 根设备对象 */
+  GUPnPDeviceInfo *deviceInfo;   /**< GUPnP 设备信息对象 */
+  gchar *friendlyName;           /**< 设备的友好名称 */
+  guint port;                    /**< UPnP 服务的开放端口 */
+  gchar *deviceDescriptionPath;  /**< 设备描述文件路径, 设置为NULL的情况时, 使用系统默认的设备描述文件 */
+  gchar *serviceDescriptionPath; /**< 服务描述文件路径, 设置为NULL的情况时, 使用系统默认的服务描述文件 */
 } UPnPContext;
 
 struct AppContext; // Forward declaration
+
 /**
  * @brief 初始化 UPnP 服务
  *
