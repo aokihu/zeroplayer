@@ -22,12 +22,12 @@ struct GstreamerPlayer; // Forward declaration
  */
 typedef struct _AppContext
 {
-    GMainLoop *mainLoop;            /**< GLib 主循环对象 */
+    GMainLoop *main_loop;           /**< GLib 主循环对象 */
     struct GstreamerPlayer *player; /**< GStreamer 播放器对象 */
-    gchar *alsaDevice;              /**< ALSA 设备名称 */
-    gboolean debugMode;             /**< 调试模式标志 */
-    CliOptions cliOptions;          /**< 命令行选项 */
-    UPnPContext *upnpContext;       /**< UPnP 服务上下文 */
+    gchar *alsa_device;             /**< ALSA 设备名称 */
+    gboolean debug_mode;            /**< 调试模式标志 */
+    CliOptions cli_options;         /**< 命令行选项 */
+    UPnPContext *upnp_context;      /**< UPnP 服务上下文 */
 } AppContext;
 
 /**
