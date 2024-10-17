@@ -42,7 +42,17 @@ void upnp_service_cleanup(UPnPContext *upnp_context);
  * @param udn UDN
  * @return 设备描述XML
  */
-gchar *upnp_device_description_generate(const gchar *friendlyName, const gchar *manufacturer, const gchar *modelName, const gchar *udn);
+gchar *upnp_device_description_generate(const gchar *friendlyName,
+                                        const gchar *manufacturer,
+                                        const gchar *modelName,
+                                        const gchar *udn);
+
+/**
+ * @brief 生成AVTransport服务描述XML
+ *
+ * @return AVTransport服务描述XML
+ */
+gchar *upnp_avtransport_description_generate();
 
 /**
  * @brief 启动 UPnP 设备
