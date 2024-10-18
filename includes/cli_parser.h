@@ -10,6 +10,7 @@ typedef struct _CliOptions
   gchar *alsa_device;
   gchar *device_name;
   gboolean show_version;
+  gchar *xml_path;
 } CliOptions;
 
 /**
