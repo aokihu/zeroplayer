@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <actionList>
+    <action>
+      <name>SetAVTransportURI</name>
+      <argumentList>
+        <argument>
+          <name>InstanceID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>CurrentURI</name>
+          <direction>in</direction>
+          <relatedStateVariable>AVTransportURI</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>CurrentURIMetaData</name>
+          <direction>in</direction>
+          <relatedStateVariable>AVTransportURIMetaData</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>Play</name>
+      <argumentList>
+        <argument>
+          <name>InstanceID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>Speed</name>
+          <direction>in</direction>
+          <relatedStateVariable>TransportPlaySpeed</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+    <!-- 添加其他必要的动作,如 Stop, Pause, Seek 等 -->
+  </actionList>
+  <serviceStateTable>
+    <stateVariable sendEvents="no">
+      <name>TransportState</name>
+      <dataType>string</dataType>
+      <allowedValueList>
+        <allowedValue>STOPPED</allowedValue>
+        <allowedValue>PLAYING</allowedValue>
+        <allowedValue>TRANSITIONING</allowedValue>
+        <allowedValue>PAUSED_PLAYBACK</allowedValue>
+        <allowedValue>PAUSED_RECORDING</allowedValue>
+        <allowedValue>RECORDING</allowedValue>
+        <allowedValue>NO_MEDIA_PRESENT</allowedValue>
+      </allowedValueList>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>TransportStatus</name>
+      <dataType>string</dataType>
+      <allowedValueList>
+        <allowedValue>OK</allowedValue>
+        <allowedValue>ERROR_OCCURRED</allowedValue>
+      </allowedValueList>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>AVTransportURI</name>
+      <dataType>string</dataType>
+    </stateVariable>
+    <stateVariable sendEvents="no">
+      <name>AVTransportURIMetaData</name>
+      <dataType>string</dataType>
+    </stateVariable>
+    <!-- 添加其他必要的状态变量 -->
+  </serviceStateTable>
+</scpd>
+
