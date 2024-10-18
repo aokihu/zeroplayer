@@ -46,7 +46,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/zeroplayer",
-            "args": ["-v"],
+            "args": ["-n", "test"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
