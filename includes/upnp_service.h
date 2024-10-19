@@ -24,7 +24,7 @@ struct AppContext; // Forward declaration
  * @param app_context 应用程序上下文
  * @return UPnPContext* UPnP 上下文指针，如果初始化失败则返回 NULL
  */
-UPnPContext *upnp_service_init(struct AppContext *app_context);
+void upnp_service_init(struct AppContext *app_context);
 
 /**
  * @brief 清理 UPnP 服务
@@ -32,27 +32,6 @@ UPnPContext *upnp_service_init(struct AppContext *app_context);
  * @param upnp_context UPnP 上下文指针
  */
 void upnp_service_cleanup(UPnPContext *upnp_context);
-
-/**
- * @brief 生成设备描述XML
- *
- * @param friendlyName 友好名称
- * @param manufacturer 制造商
- * @param modelName 模型名称
- * @param udn UDN
- * @return 设备描述XML
- */
-gchar *upnp_device_description_generate(const gchar *friendlyName,
-                                        const gchar *manufacturer,
-                                        const gchar *modelName,
-                                        const gchar *udn);
-
-/**
- * @brief 生成AVTransport服务描述XML
- *
- * @return AVTransport服务描述XML
- */
-gchar *upnp_avtransport_description_generate();
 
 /**
  * @brief 启动 UPnP 设备
@@ -84,5 +63,30 @@ void upnp_service_set_friendly_name(UPnPContext *upnp_context, const gchar *frie
  * @return const gchar* 友好名称
  */
 const gchar *upnp_service_get_friendly_name(UPnPContext *upnp_context);
+
+/**
+ * @brief 当UPnP上下文可用时调用
+ *
+ * @param manager GUPnPContextManager指针
+ * @param context GUPnPContext指针
+ * @param user_data 用户数据
+ *
+ * @details 当UPnP上下文可用时调用, 可以在这里进行一些初始化操作,
+ *          比如创建UPnP设备, 创建UPnP服务等.
+ */
+void upnp_on_context_available(GUPnPContextManager *manager,
+                               GUPnPContext *context,
+                               gpointer user_data);
+
+/**
+ * @brief 当UPnP上下文不可用时调用
+ *
+ * @param manager GUPnPContextManager指针
+ * @param context GUPnPContext指针
+ * @param user_data 用户数据
+ */
+void upnp_on_context_unavailable(GUPnPContextManager *manager,
+                                 GUPnPContext *context,
+                                 gpointer user_data);
 
 #endif /* UPNP_SERVICE_H */
