@@ -42,12 +42,7 @@ static gboolean initialize_app(AppContext *app_context, int argc, char *argv[])
   }
 
   // 初始化UPnP服务
-  app_context->upnp_context = upnp_service_init(app_context);
-  if (!app_context->upnp_context)
-  {
-    g_printerr("Failed to initialize UPnP service\n");
-    return FALSE;
-  }
+  upnp_service_init(app_context);
 
   // 创建主循环
   app_context->main_loop = g_main_loop_new(NULL, FALSE);
