@@ -11,6 +11,7 @@ typedef struct _CliOptions
   gchar *device_name;
   gboolean show_version;
   gchar *xml_path;
+  gint port;
 } CliOptions;
 
 /**

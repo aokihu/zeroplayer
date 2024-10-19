@@ -11,6 +11,7 @@ static const GOptionEntry entries[] = {
     {"name", 'n', 0, G_OPTION_ARG_STRING, NULL, "Set device display name", "NAME"},
     {"version", 'v', 0, G_OPTION_ARG_NONE, NULL, "Print current software version", NULL},
     {"xml-path", 'x', 0, G_OPTION_ARG_STRING, NULL, "Specify UPnP service XML file path", "PATH"},
+    {"port", 'p', 0, G_OPTION_ARG_INT, NULL, "Specify UPnP service port", "PORT"},
     {NULL}};
 
 gboolean parse_cli_options(int argc, char *argv[], CliOptions *options)
@@ -38,6 +39,7 @@ gboolean parse_cli_options(int argc, char *argv[], CliOptions *options)
   local_entries[3].arg_data = &options->device_name;
   local_entries[4].arg_data = &options->show_version;
   local_entries[5].arg_data = &options->xml_path; // 新增的xml_path选项
+  local_entries[6].arg_data = &options->port;
 
   // 创建选项上下文
   context = g_option_context_new("- ZeroPlayer UPnP Audio Renderer");
@@ -84,6 +86,11 @@ gboolean parse_cli_options(int argc, char *argv[], CliOptions *options)
   if (options->xml_path)
   {
     g_print("XML file path: %s\n", options->xml_path);
+  }
+
+  if (options->port)
+  {
+    g_print("UPnP service port: %d\n", options->port);
   }
 
   g_option_context_free(context);
