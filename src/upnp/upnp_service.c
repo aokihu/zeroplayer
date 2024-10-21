@@ -1,3 +1,10 @@
+/**
+ * @file upnp_service.c
+ * @brief UPnP Service
+ * @author aokihu <aokihu@gmail.com>
+ */
+
+#include "upnp_util.h"
 #include "upnp_service.h"
 #include "app_context.h"
 #include <glib.h>
@@ -5,17 +12,6 @@
 #include <uuid/uuid.h>
 #include <libgupnp/gupnp.h>
 #include <libgupnp/gupnp-service-info.h>
-
-/**
- * @brief 获取UPnP上下文的IP地址
- *
- * @param context GUPnPContext指针
- * @return const char* IP地址字符串
- */
-static const char *gupnp_context_get_host_ip(GUPnPContext *context)
-{
-  return gssdp_client_get_host_ip(GSSDP_CLIENT(context));
-}
 
 /**
  * @brief Initialize UPnP service
@@ -48,37 +44,33 @@ void upnp_service_cleanup(UPnPContext *upnp_context)
 }
 
 /**
- * @brief 启动 UPnP 设备
- *
- * @param upnp_context UPnP 上下文指针
- * @return gboolean 启动是否成功
- */
-gboolean upnp_service_start(UPnPContext *upnp_context)
-{
-
-  return TRUE;
-}
-
-/**
  * @brief 当UPnP上下文可用时调用
  *
  * @param manager GUPnPContextManager指针
  * @param context GUPnPContext指针
  * @param user_data 用户数据, 指向AppContext结构体指针
  */
-void upnp_on_context_available(GUPnPContextManager *manager,
-                               GUPnPContext *context,
-                               gpointer user_data)
+void upnp_on_context_available(GUPnPContextManager *manager, GUPnPContext *context, gpointer user_data)
 {
   const char *ip = gupnp_context_get_host_ip(context);
   g_print("UPnP context available IP: %s\n", ip);
 
   GError *error = NULL;
 
-  GUPnPRootDevice *rd = gupnp_root_device_new(context, "description.xml", "./XML", &error);
+  // 创建根设备
+  GUPnPRootDevice *rd = gupnp_root_device_new(context, "Description.xml", "./XML", &error);
   gupnp_context_manager_manage_root_device(manager, rd);
+
+  // 创建 AVTransport 服务
+  on_avt_service_available(rd, user_data);
+
+  // 创建 ConnectionManager 服务
+  on_cm_service_available(rd, user_data);
+
+  // 设置根设备可用
   gupnp_root_device_set_available(rd, TRUE);
 
+  // 释放根设备
   g_object_unref(rd);
 }
 

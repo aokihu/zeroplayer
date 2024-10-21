@@ -3,6 +3,7 @@
 
 #include <glib.h>
 #include <libgupnp/gupnp.h>
+#include "upnp_callback.h"
 
 // UPnP 上下文结构体
 typedef struct
@@ -32,14 +33,6 @@ void upnp_service_init(struct AppContext *app_context);
  * @param upnp_context UPnP 上下文指针
  */
 void upnp_service_cleanup(UPnPContext *upnp_context);
-
-/**
- * @brief 启动 UPnP 设备
- *
- * @param upnp_context UPnP 上下文指针
- * @return gboolean 启动是否成功
- */
-gboolean upnp_service_start(UPnPContext *upnp_context);
 
 /**
  * @brief 停止 UPnP 设备
