@@ -1,18 +1,8 @@
-#ifndef CLI_PARSER_H
-#define CLI_PARSER_H
+#ifndef __ZERO_PLAYER_CLI_PARSER_H__
+#define __ZERO_PLAYER_CLI_PARSER_H__
 
 #include <glib.h>
-
-typedef struct _CliOptions
-{
-  gboolean debug_mode;
-  gchar *config_file_path;
-  gchar *alsa_device;
-  gchar *device_name;
-  gboolean show_version;
-  gchar *xml_path;
-  gint port;
-} CliOptions;
+#include "struct.h"
 
 /**
  * @brief 解析命令行参数

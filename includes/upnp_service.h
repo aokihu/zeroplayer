@@ -1,85 +1,59 @@
-#ifndef UPNP_SERVICE_H
-#define UPNP_SERVICE_H
+#ifndef __ZERO_PLAYER_UPNP_SERVICE_H__
+#define __ZERO_PLAYER_UPNP_SERVICE_H__
 
 #include <glib.h>
 #include <libgupnp/gupnp.h>
-#include "upnp_callback.h"
+#include <libgupnp/gupnp.h>
+#include <libgupnp/gupnp-service-info.h>
+#include "struct.h"
 
-// UPnP 上下文结构体
-typedef struct
-{
-  GUPnPContext *upnp_context;    /**< GUPnP 上下文对象 */
-  GUPnPRootDevice *rootDevice;   /**< GUPnP 根设备对象 */
-  GUPnPDeviceInfo *deviceInfo;   /**< GUPnP 设备信息对象 */
-  gchar *friendlyName;           /**< 设备的友好名称 */
-  guint port;                    /**< UPnP 服务的开放端口 */
-  gchar *deviceDescriptionPath;  /**< 设备描述文件路径, 设置为NULL的情况时, 使用系统默认的设备描述文件 */
-  gchar *serviceDescriptionPath; /**< 服务描述文件路径, 设置为NULL的情况时, 使用系统默认的服务描述文件 */
-} UPnPContext;
+/* ------------ 工具方法 ------------ */
 
-struct AppContext; // Forward declaration
+/* 获取IP地址 */
+const char *gupnp_context_get_host_ip(
+    GUPnPContext *context // UPnP上下文
+);
 
-/**
- * @brief 初始化 UPnP 服务
- *
- * @param app_context 应用程序上下文
- * @return UPnPContext* UPnP 上下文指针，如果初始化失败则返回 NULL
- */
-void upnp_service_init(struct AppContext *app_context);
+/* ------------ 服务方法 ------------ */
 
-/**
- * @brief 清理 UPnP 服务
- *
- * @param upnp_context UPnP 上下文指针
- */
-void upnp_service_cleanup(UPnPContext *upnp_context);
+/* UPnP服务初始化 */
+void upnp_service_init(
+    AppContext *app_context // 应用程序上下文
+);
 
-/**
- * @brief 停止 UPnP 设备
- *
- * @param upnp_context UPnP 上下文指针
- */
-void upnp_service_stop(UPnPContext *upnp_context);
+/* UPnP服务清理 */
+void upnp_service_cleanup(
+    AppContext *app_context // 应用程序上下文
+);
 
-/**
- * @brief 设置 UPnP 设备的友好名称
- *
- * @param upnp_context UPnP 上下文指针
- * @param friendly_name 友好名称
- */
-void upnp_service_set_friendly_name(UPnPContext *upnp_context, const gchar *friendly_name);
+/* UPnP服务停止 */
+void upnp_service_stop(
+    AppContext *app_context // 应用程序上下文
+);
 
-/**
- * @brief 获取 UPnP 设备的友好名称
- *
- * @param upnp_context UPnP 上下文指针
- * @return const gchar* 友好名称
- */
-const gchar *upnp_service_get_friendly_name(UPnPContext *upnp_context);
+/* 设置UPnP设备的友好名称 */
+void upnp_service_set_friendly_name(
+    AppContext *app_context,   // 应用程序上下文
+    const gchar *friendly_name // 友好名称
+);
 
-/**
- * @brief 当UPnP上下文可用时调用
- *
- * @param manager GUPnPContextManager指针
- * @param context GUPnPContext指针
- * @param user_data 用户数据
- *
- * @details 当UPnP上下文可用时调用, 可以在这里进行一些初始化操作,
- *          比如创建UPnP设备, 创建UPnP服务等.
- */
-void upnp_on_context_available(GUPnPContextManager *manager,
-                               GUPnPContext *context,
-                               gpointer user_data);
+/* 获取UPnP设备的友好名称 */
+const gchar *upnp_service_get_friendly_name(
+    AppContext *app_context // 应用程序上下文
+);
 
-/**
- * @brief 当UPnP上下文不可用时调用
- *
- * @param manager GUPnPContextManager指针
- * @param context GUPnPContext指针
- * @param user_data 用户数据
- */
-void upnp_on_context_unavailable(GUPnPContextManager *manager,
-                                 GUPnPContext *context,
-                                 gpointer user_data);
+/* 当UPnP上下文可用时调用 */
+void upnp_on_context_available(
+    GUPnPContextManager *manager, // GUPnP上下文管理器
+    GUPnPContext *context,        // GUPnP上下文
+    gpointer user_data            // 用户数据
+);
 
-#endif /* UPNP_SERVICE_H */
+/* 当UPnP上下文不可用时调用 */
+void upnp_on_context_unavailable(
+    GUPnPContextManager *manager, // GUPnP上下文管理器
+    GUPnPContext *context,        // GUPnP上下文
+    gpointer user_data            // 用户数据
+);
+
+#endif /* __ZERO_PLAYER_UPNP_SERVICE_H__ */

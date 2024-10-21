@@ -8,6 +8,49 @@
 
   <!-- 操作列表 -->
   <actionList>
+
+    <!-- 准备连接 -->
+    <action>
+      <name>PrepareForConnection</name>
+      <argumentList>
+        <argument>
+          <name>RemoteProtocolInfo</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_ProtocolInfo</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>PeerConnectionManager</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_ConnectionManager</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>PeerConnectionID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_ConnectionID</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>Direction</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_Direction</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>ConnectionID</name>
+          <direction>out</direction>
+          <relatedStateVariable>A_ARG_TYPE_ConnectionID</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>RcsID</name>
+          <direction>out</direction>
+          <relatedStateVariable>A_ARG_TYPE_RcsID</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>AVTransportID</name>
+          <direction>out</direction>
+          <relatedStateVariable>A_ARG_TYPE_AVTransportID</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+
     <!-- 获取协议信息 -->
     <action>
       <name>GetProtocolInfo</name>

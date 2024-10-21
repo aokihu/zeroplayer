@@ -3,7 +3,7 @@
  * @brief UPnP 工具函数
  */
 
-#include "upnp_util.h"
+#include "upnp_service.h"
 
 /**
  * @brief 获取UPnP上下文的IP地址

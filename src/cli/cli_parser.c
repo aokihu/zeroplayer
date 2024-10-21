@@ -6,7 +6,6 @@
 
 static const GOptionEntry entries[] = {
     {"debug", 'd', 0, G_OPTION_ARG_NONE, NULL, "Enable debug mode", NULL},
-    {"config", 'c', 0, G_OPTION_ARG_FILENAME, NULL, "Specify config file path", "PATH"},
     {"output-alsa-device", 0, 0, G_OPTION_ARG_STRING, NULL, "Set ALSA device", "DEVICE"},
     {"name", 'n', 0, G_OPTION_ARG_STRING, NULL, "Set device display name", "NAME"},
     {"version", 'v', 0, G_OPTION_ARG_NONE, NULL, "Print current software version", NULL},
@@ -34,12 +33,11 @@ gboolean parse_cli_options(int argc, char *argv[], CliOptions *options)
 
   // 设置选项数据指针
   local_entries[0].arg_data = &options->debug_mode;
-  local_entries[1].arg_data = &options->config_file_path;
-  local_entries[2].arg_data = &options->alsa_device;
-  local_entries[3].arg_data = &options->device_name;
-  local_entries[4].arg_data = &options->show_version;
-  local_entries[5].arg_data = &options->xml_path; // 新增的xml_path选项
-  local_entries[6].arg_data = &options->port;
+  local_entries[1].arg_data = &options->alsa_device;
+  local_entries[2].arg_data = &options->device_name;
+  local_entries[3].arg_data = &options->show_version;
+  local_entries[4].arg_data = &options->xml_path; // 新增的xml_path选项
+  local_entries[5].arg_data = &options->port;
 
   // 创建选项上下文
   context = g_option_context_new("- ZeroPlayer UPnP Audio Renderer");
@@ -66,11 +64,6 @@ gboolean parse_cli_options(int argc, char *argv[], CliOptions *options)
   if (options->debug_mode)
   {
     g_print("Debug mode enabled\n");
-  }
-
-  if (options->config_file_path)
-  {
-    g_print("Config file path: %s\n", options->config_file_path);
   }
 
   if (options->alsa_device)
@@ -120,7 +113,6 @@ void free_cli_options(CliOptions *options)
   if (options)
   {
     // 释放动态分配的内存
-    g_free(options->config_file_path);
     g_free(options->alsa_device);
     g_free(options->device_name);
     g_free(options->xml_path); // 新增释放xml_path
