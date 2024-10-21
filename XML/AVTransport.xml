@@ -4,7 +4,36 @@
     <major>1</major>
     <minor>0</minor>
   </specVersion>
+  
   <actionList>
+    <!-- 获取设备能力 -->
+    <action>
+      <name>GetDeviceCapabilities</name>
+      <argumentList>
+        <argument>
+          <name>InstanceID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>PlayMedia</name>
+          <direction>out</direction>
+          <relatedStateVariable>A_ARG_TYPE_PlayMedia</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>RecMedia</name>
+          <direction>out</direction>
+          <relatedStateVariable>A_ARG_TYPE_RecMedia</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>RecQualityModes</name>
+          <direction>out</direction>
+          <relatedStateVariable>A_ARG_TYPE_RecQualityModes</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+    
+    <!-- 设置AV传输URI -->
     <action>
       <name>SetAVTransportURI</name>
       <argumentList>
@@ -25,6 +54,8 @@
         </argument>
       </argumentList>
     </action>
+    
+    <!-- 播放 -->
     <action>
       <name>Play</name>
       <argumentList>
@@ -40,10 +71,35 @@
         </argument>
       </argumentList>
     </action>
-    <!-- 添加其他必要的动作,如 Stop, Pause, Seek 等 -->
+
+    <!-- 暂停 -->
+    <action>
+      <name>Pause</name>
+      <argumentList>
+        <argument>
+          <name>InstanceID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+
+    <!-- 停止 -->
+    <action>
+      <name>Stop</name>
+      <argumentList>
+        <argument>
+          <name>InstanceID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
   </actionList>
+  
   <serviceStateTable>
-    <stateVariable sendEvents="no">
+    <!-- 传输状态 -->
+    <stateVariable sendEvents="yes">
       <name>TransportState</name>
       <dataType>string</dataType>
       <allowedValueList>
@@ -56,7 +112,9 @@
         <allowedValue>NO_MEDIA_PRESENT</allowedValue>
       </allowedValueList>
     </stateVariable>
-    <stateVariable sendEvents="no">
+
+    <!-- 传输状态的详细状态 -->
+    <stateVariable sendEvents="yes">
       <name>TransportStatus</name>
       <dataType>string</dataType>
       <allowedValueList>
@@ -64,15 +122,50 @@
         <allowedValue>ERROR_OCCURRED</allowedValue>
       </allowedValueList>
     </stateVariable>
+
+    <!-- 当前传输的URI -->
     <stateVariable sendEvents="no">
       <name>AVTransportURI</name>
       <dataType>string</dataType>
     </stateVariable>
+
+    <!-- 当前传输的URI元数据 -->
     <stateVariable sendEvents="no">
       <name>AVTransportURIMetaData</name>
       <dataType>string</dataType>
     </stateVariable>
-    <!-- 添加其他必要的状态变量 -->
+
+    <!-- 实例ID -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_InstanceID</name>
+      <dataType>ui4</dataType>
+    </stateVariable>
+
+    <!-- 是否支持播放媒体 -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_PlayMedia</name>
+      <dataType>boolean</dataType>
+    </stateVariable>
+
+    <!-- 是否支持录制媒体 -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_RecMedia</name>
+      <dataType>boolean</dataType>
+    </stateVariable>
+
+    <!-- 录制质量模式 -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_RecQualityModes</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 播放速度 -->
+    <stateVariable sendEvents="no">
+      <name>TransportPlaySpeed</name>
+      <dataType>string</dataType>
+      <allowedValueList>
+        <allowedValue>1</allowedValue>
+      </allowedValueList>
+    </stateVariable>
   </serviceStateTable>
 </scpd>
-

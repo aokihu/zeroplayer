@@ -1,31 +1,75 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <root xmlns="urn:schemas-upnp-org:device-1-0">
   <specVersion>
     <major>1</major>
     <minor>0</minor>
   </specVersion>
   <device>
-    <deviceType>urn:schemas-upnp-org:device:MediaRenderer:1</deviceType>
+    <!-- 设备类型 -->
+    <deviceType>urn:schemas-upnp-org:device:MediaRenderer:3</deviceType>
+    
+    <!-- 友好名称，控制点将显示该名称 -->
     <friendlyName>ZeroPlayer</friendlyName>
+    
+    <!-- 制造商信息 -->
     <manufacturer>Aokihu</manufacturer>
+    <manufacturerURL>http://www.aokihu.com</manufacturerURL>
+    
+    <!-- 设备型号信息 -->
     <modelName>ZeroPlayer</modelName>
+    <modelDescription>A high-quality UPnP Media Renderer</modelDescription>
     <modelNumber>1.0</modelNumber>
+    <modelURL>http://www.aokihu.com/zeroplayer</modelURL>
+    
+    <!-- 设备UUID -->
     <UDN>uuid:com.aokihu.ZeroPlayer</UDN>
-    <!-- <serviceList>
+    
+    <!-- 图标列表（可选） -->
+    <iconList>
+      <icon>
+        <mimetype>image/png</mimetype>
+        <width>48</width>
+        <height>48</height>
+        <depth>24</depth>
+        <url>/icons/zeroplayer-48x48.png</url>
+      </icon>
+      <icon>
+        <mimetype>image/png</mimetype>
+        <width>128</width>
+        <height>128</height>
+        <depth>24</depth>
+        <url>/icons/zeroplayer-128x128.png</url>
+      </icon>
+    </iconList>
+    
+    <!-- 服务列表 -->
+    <serviceList>
+      <!-- AVTransport 服务 -->
       <service>
-        <serviceType>urn:schemas-upnp-org:service:AVTransport:1</serviceType>
+        <serviceType>urn:schemas-upnp-org:service:AVTransport:3</serviceType>
         <serviceId>urn:upnp-org:serviceId:AVTransport</serviceId>
         <SCPDURL>/AVTransport.xml</SCPDURL>
-        <controlURL>/control/AVTransport</controlURL>
-        <eventSubURL>/event/AVTransport</eventSubURL>
+        <controlURL>/upnp/control/AVTransport</controlURL>
+        <eventSubURL>/upnp/event/AVTransport</eventSubURL>
       </service>
+      
+      <!-- RenderingControl 服务 -->
       <service>
-        <serviceType>urn:schemas-upnp-org:service:RenderingControl:1</serviceType>
+        <serviceType>urn:schemas-upnp-org:service:RenderingControl:3</serviceType>
         <serviceId>urn:upnp-org:serviceId:RenderingControl</serviceId>
         <SCPDURL>/RenderingControl.xml</SCPDURL>
-        <controlURL>/control/RenderingControl</controlURL>
-        <eventSubURL>/event/RenderingControl</eventSubURL>
+        <controlURL>/upnp/control/RenderingControl</controlURL>
+        <eventSubURL>/upnp/event/RenderingControl</eventSubURL>
       </service>
-    </serviceList> -->
+      
+      <!-- ConnectionManager 服务 -->
+      <service>
+        <serviceType>urn:schemas-upnp-org:service:ConnectionManager:3</serviceType>
+        <serviceId>urn:upnp-org:serviceId:ConnectionManager</serviceId>
+        <SCPDURL>/ConnectionManager.xml</SCPDURL>
+        <controlURL>/upnp/control/ConnectionManager</controlURL>
+        <eventSubURL>/upnp/event/ConnectionManager</eventSubURL>
+      </service>
+    </serviceList>
   </device>
 </root>
