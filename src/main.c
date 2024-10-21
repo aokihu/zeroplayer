@@ -50,6 +50,10 @@ static gboolean initialize_app(AppContext *app_context, int argc, char *argv[])
   return TRUE;
 }
 
+/**
+ * @brief 清理应用程序
+ * @param app_context 应用程序上下文
+ */
 static void cleanup_app(AppContext *app_context)
 {
   if (app_context)
