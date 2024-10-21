@@ -38,6 +38,7 @@ void on_avt_service_available(GUPnPRootDevice *rd, gpointer user_data);
 
 /* Action Callback Functions */
 
+void on_set_av_transport_uri_action(GUPnPService *service, GUPnPServiceAction *action, gpointer user_data);
 void on_play_action(GUPnPService *service, GUPnPServiceAction *action, gpointer user_data);
 void on_pause_action(GUPnPService *service, GUPnPServiceAction *action, gpointer user_data);
 void on_stop_action(GUPnPService *service, GUPnPServiceAction *action, gpointer user_data);

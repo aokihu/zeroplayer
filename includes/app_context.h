@@ -14,7 +14,7 @@
 #include "upnp_service.h"
 // #include "gstreamer_player.h"
 
-struct GstreamerPlayer; // Forward declaration
+struct GstreamerPlayer GstreamerPlayer; // Forward declaration
 
 /**
  * @struct AppContext
