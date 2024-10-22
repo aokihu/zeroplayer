@@ -36,8 +36,9 @@ typedef struct _CliOptions
  */
 typedef struct
 {
-  guint id;
   GUPnPContextManager *upnp_manager;
+  gint nextConnectionID;
+  gchar *currentConnectionIDs;
 } UPnPContext;
 
 /**

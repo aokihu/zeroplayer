@@ -24,7 +24,9 @@ void upnp_service_init(AppContext *app_context)
 {
   UPnPContext *upnp_context = g_new0(UPnPContext, 1);
   app_context->upnp_context = upnp_context;
-  app_context->upnp_context->id = 0;
+  app_context->upnp_context->nextConnectionID = 0;
+  app_context->upnp_context->currentConnectionIDs = g_strdup("");
+
 
   // 初始化UPnP
   GUPnPContextManager *manager = gupnp_context_manager_create(0);
