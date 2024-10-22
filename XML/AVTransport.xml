@@ -32,7 +32,103 @@
         </argument>
       </argumentList>
     </action>
-    
+
+    <!-- 获取当前传输动作 -->
+    <action>
+      <name>GetCurrentTransportActions</name>
+      <argumentList>
+        <argument>
+          <name>InstanceID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>CurrentTransportActions</name>
+          <direction>out</direction>
+          <relatedStateVariable>CurrentTransportActions</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+
+    <!-- 获取传输信息 -->
+    <action>
+      <name>GetTransportInfo</name>
+      <argumentList>
+        <argument>
+          <name>InstanceID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>CurrentTransportState</name>
+          <direction>out</direction>
+          <relatedStateVariable>TransportState</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>CurrentTransportStatus</name>
+          <direction>out</direction>
+          <relatedStateVariable>TransportStatus</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>CurrentTransportPlaySpeed</name>
+          <direction>out</direction>
+          <relatedStateVariable>TransportPlaySpeed</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+
+    <!-- 获取位置信息 -->
+    <action>
+      <name>GetPositionInfo</name>
+      <argumentList>
+        <argument>
+          <name>InstanceID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>Track</name>
+          <direction>out</direction>
+          <relatedStateVariable>Track</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>TrackDuration</name>
+          <direction>out</direction>
+          <relatedStateVariable>TrackDuration</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>TrackMetaData</name>
+          <direction>out</direction>
+          <relatedStateVariable>TrackMetaData</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>TrackURI</name>
+          <direction>out</direction>
+          <relatedStateVariable>TrackURI</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>RelTimePosition</name>
+          <direction>out</direction>
+          <relatedStateVariable>RelTimePosition</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>AbsTimePosition</name>
+          <direction>out</direction>
+          <relatedStateVariable>AbsTimePosition</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>RelCount</name>
+          <direction>out</direction>
+          <relatedStateVariable>RelCount</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>AbsCount</name>
+          <direction>out</direction>
+          <relatedStateVariable>AbsCount</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+
     <!-- 设置AV传输URI -->
     <action>
       <name>SetAVTransportURI</name>
@@ -118,6 +214,7 @@
       </argumentList>
     </action>
 
+
     <!-- 获取状态变量 -->
     <action>
       <name>GetStateVariables</name>
@@ -163,8 +260,6 @@
         <allowedValue>PLAYING</allowedValue>
         <allowedValue>TRANSITIONING</allowedValue>
         <allowedValue>PAUSED_PLAYBACK</allowedValue>
-        <allowedValue>PAUSED_RECORDING</allowedValue>
-        <allowedValue>RECORDING</allowedValue>
         <allowedValue>NO_MEDIA_PRESENT</allowedValue>
       </allowedValueList>
     </stateVariable>
@@ -188,6 +283,42 @@
     <!-- 当前传输的URI元数据 -->
     <stateVariable sendEvents="no">
       <name>AVTransportURIMetaData</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 下一首URI -->
+    <stateVariable sendEvents="no">
+      <name>NextAVTransportURI</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 下一首URI元数据 -->
+    <stateVariable sendEvents="no">
+      <name>NextAVTransportURIMetaData</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 当前音轨 -->
+    <stateVariable sendEvents="no">
+      <name>CurrentTrack</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 当前音轨URI -->
+    <stateVariable sendEvents="no">
+      <name>CurrentTrackURI</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 当前音轨元数据 -->
+    <stateVariable sendEvents="no">
+      <name>CurrentTrackMetaData</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 当前音轨持续时间 -->
+    <stateVariable sendEvents="no">
+      <name>CurrentTrackDuration</name>
       <dataType>string</dataType>
     </stateVariable>
 
@@ -215,6 +346,12 @@
       <dataType>string</dataType>
     </stateVariable>
 
+    <!-- 当前传输的动作 -->
+    <stateVariable sendEvents="no">
+      <name>CurrentTransportActions</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
     <!-- 播放速度 -->
     <stateVariable sendEvents="no">
       <name>TransportPlaySpeed</name>
@@ -222,6 +359,25 @@
       <allowedValueList>
         <allowedValue>1</allowedValue>
       </allowedValueList>
+    </stateVariable>
+
+
+    <!-- 轨道 -->
+    <stateVariable sendEvents="no">
+      <name>Track</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 轨道时长 -->
+    <stateVariable sendEvents="no">
+      <name>TrackDuration</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 轨道元数据 -->
+    <stateVariable sendEvents="no">
+      <name>TrackMetaData</name>
+      <dataType>string</dataType>
     </stateVariable>
   </serviceStateTable>
 </scpd>
