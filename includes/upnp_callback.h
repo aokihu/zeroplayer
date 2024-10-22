@@ -16,7 +16,7 @@
 // ----------------------------------------- //
 
 /* 服务可用回调函数类型定义 */
-typedef void (*UPnPServiceAvailableCallback)(GUPnPRootDevice *rd, gpointer user_data);
+#define UPNP_SERVICE_AVAILABLE_CALLBACK(name) void name(GUPnPRootDevice *rd, gpointer user_data)
 
 /* 动作回调函数类型定义 */
 typedef void (*UPnPActionCallback)(GUPnPService *service, GUPnPServiceAction *action, gpointer user_data);
@@ -31,7 +31,7 @@ typedef void (*UPnPQueryCallback)(GUPnPService *service, gchar *variable, const 
 // ----------------------------------------- //
 
 /* Service Available Callback Functions */
-UPnPServiceAvailableCallback on_connection_manager_service_available;
+UPNP_SERVICE_AVAILABLE_CALLBACK(on_connection_manager_service_available);
 
 /* Action Callback Functions */
 
@@ -52,7 +52,7 @@ UPnPQueryCallback on_get_current_connection_ids_query; // 获取当前连接ID�
 // ----------------------------------------- //
 
 /* Service Available Callback Functions */
-UPnPServiceAvailableCallback on_av_transport_service_available;
+UPNP_SERVICE_AVAILABLE_CALLBACK(on_av_transport_service_available);
 
 /* Action Callback Functions */
 UPnPActionCallback on_set_av_transport_uri_action; // 设置媒体URI的回调函数
@@ -75,7 +75,7 @@ UPnPQueryCallback on_get_current_media_duration_query; // 获取当前媒体时�
 // ----------------------------------------- //
 
 /* Service Available Callback Functions */
-UPnPServiceAvailableCallback on_rendering_control_service_available;
+UPNP_SERVICE_AVAILABLE_CALLBACK(on_rendering_control_service_available);
 
 /* Action Callback Functions */
 

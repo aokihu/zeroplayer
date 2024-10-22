@@ -4,6 +4,7 @@
  * @author aokihu <aokihu@gmail.com>
  */
 
+#include "upnp_callback.h"
 #include "upnp_service.h"
 #include "app_context.h"
 #include <glib.h>
@@ -11,6 +12,9 @@
 #include <uuid/uuid.h>
 #include <libgupnp/gupnp.h>
 #include <libgupnp/gupnp-service-info.h>
+
+static void on_service_available(GUPnPContextManager *manager, GUPnPContext *context, gpointer user_data);
+static void on_service_unavailable(GUPnPContextManager *manager, GUPnPContext *context, gpointer user_data);
 
 /**
  * @brief 创建UPnP上下文
@@ -25,6 +29,9 @@ void upnp_service_init(AppContext *app_context)
   // 初始化UPnP
   GUPnPContextManager *upnp_manager = gupnp_context_manager_create_full(GSSDP_UDA_VERSION_1_1, G_SOCKET_FAMILY_IPV4, 0);
   app_context->upnp_context->upnp_manager = upnp_manager;
+
+  g_signal_connect(upnp_manager, "context-available", G_CALLBACK(on_service_available), app_context);
+  g_signal_connect(upnp_manager, "context-unavailable", G_CALLBACK(on_service_unavailable), app_context);
 }
 
 /**
@@ -35,4 +42,48 @@ void upnp_service_cleanup(AppContext *app_context)
 {
   g_object_unref(app_context->upnp_context->upnp_manager);
   g_free(app_context->upnp_context);
+}
+
+/**
+ * @brief 服务可用回调函数
+ * @param manager UPnP上下文管理器
+ * @param context UPnP上下文
+ * @param user_data 用户数据(AppContext 应用程序上下文)
+ */
+static void on_service_available(
+    GUPnPContextManager *manager,
+    GUPnPContext *context,
+    gpointer user_data)
+{
+  // 打印监听的端口
+  gchar *host_ip = gupnp_context_get_host_ip(context);
+  g_print("Service is available, listening on port %s\n", host_ip);
+  g_free(host_ip);
+
+  GError *error = NULL;
+  GUPnPRootDevice *root_device = gupnp_root_device_new(context, "description.xml", "./XML", &error);
+  if (error)
+  {
+    g_printerr("Error creating root device: %s\n", error->message);
+    g_error_free(error);
+    return;
+  }
+
+  gupnp_context_manager_manage_root_device(manager, root_device);
+  on_connection_manager_service_available(root_device, user_data);
+  gupnp_root_device_set_available(root_device, TRUE);
+}
+
+/**
+ * @brief 服务不可用回调函数
+ * @param manager UPnP上下文管理器
+ * @param context UPnP上下文
+ * @param user_data 用户数据
+ */
+static void on_service_unavailable(
+    GUPnPContextManager *manager,
+    GUPnPContext *context,
+    gpointer user_data)
+{
+  g_print("Service is unavailable\n");
 }
