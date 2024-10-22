@@ -7,6 +7,15 @@
 #include <libgupnp/gupnp-service-info.h>
 #include "struct.h"
 
+/* ------------ 全局变量 ------------ */
+
+
+/**
+ * @brief 支持的协议信息
+ * @see src/upnp/upnp_service.c
+ */
+extern const gchar *UPNP_SERVICE_SINK_PROTOCOL[];
+
 
 /* ------------ 工具方法 ------------ */
 
