@@ -92,6 +92,8 @@ static void on_service_available(
 
   // 服务设置
   on_connection_manager_service_available(root_device, user_data);
+  on_av_transport_service_available(root_device, user_data);
+  on_rendering_control_service_available(root_device, user_data);
 
   gupnp_root_device_set_available(root_device, TRUE);
 
