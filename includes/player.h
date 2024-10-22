@@ -13,6 +13,12 @@
 /* Constant Variables Definitions */
 #define PLAYBIN_NAME "playbin"
 
+/* 工具方法定义 */
+gint64 *player_get_timestamp_from_string(gchar* timestamp);
+gchar  *player_util_get_timestamp_string(gint64 timestamp);
+
+
+
 /* Function Declarations */
 PlayerContext *player_new(void);                                  // Create a new player context
 void player_free(PlayerContext *player);                          // Free the player context

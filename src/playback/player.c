@@ -62,6 +62,16 @@ void player_set_uri(
 }
 
 /**
+ * @brief 获取播放器URI
+ * @param player_context 播放器上下文
+ * @return URI
+ */
+gchar *player_get_uri(PlayerContext *player_context)
+{
+  return player_context->uri;
+}
+
+/**
  * @brief 设置播放器下一个URI
  * @param player_context 播放器上下文
  * @param uri URI

@@ -95,6 +95,62 @@
         </argument>
       </argumentList>
     </action>
+
+    <!-- 跳转 -->
+    <action>
+      <name>Seek</name>
+      <argumentList>
+        <argument>
+          <name>InstanceID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>Unit</name>
+          <direction>in</direction>
+          <relatedStateVariable>SeekUnit</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>Target</name>
+          <direction>in</direction>
+          <relatedStateVariable>RelativeTimePosition</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+
+    <!-- 获取状态变量 -->
+    <action>
+      <name>GetStateVariables</name>
+      <argumentList>
+        <argument>
+          <name>InstanceID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>StateVariableList</name>
+          <direction>out</direction>
+          <relatedStateVariable>StateVariableList</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+
+    <!-- 设置状态变量 -->
+    <action>
+      <name>SetStateVariables</name>
+      <argumentList>
+        <argument>
+          <name>InstanceID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>StateVariableValuePairs</name>
+          <direction>in</direction>
+          <relatedStateVariable>StateVariableList</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
   </actionList>
   
   <serviceStateTable>

@@ -68,6 +68,7 @@ UPNP_SERVICE_AVAILABLE_CALLBACK(on_av_transport_service_available);
 
 /* Action Callback Functions */
 UPNP_ACTION_CALLBACK(on_set_av_transport_uri_action); // 设置媒体URI的回调函数
+UPNP_ACTION_CALLBACK(on_get_device_capabilities_action); // 获取设备能力的回调函数
 UPNP_ACTION_CALLBACK(on_play_action);                 // 播放的回调函数
 UPNP_ACTION_CALLBACK(on_pause_action);                // 暂停的回调函数
 UPNP_ACTION_CALLBACK(on_stop_action);                 // 停止的回调函数
