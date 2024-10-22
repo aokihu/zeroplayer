@@ -31,6 +31,8 @@ void on_connection_manager_service_available(
     CONNECT_ACTION(GetCurrentConnectionIDs, on_get_current_connection_ids_action);
     CONNECT_ACTION(GetCurrentConnectionInfo, on_get_current_connection_info_action);
     CONNECT_QUERY(SourceProtocolInfo, on_get_source_protocol_info_query);
+    CONNECT_QUERY(SinkProtocolInfo, on_get_sink_protocol_info_query);
+    CONNECT_QUERY(CurrentConnectionIDs, on_get_current_connection_ids_query);
     g_print("ConnectionManager Ready.\n");
   }
   else
