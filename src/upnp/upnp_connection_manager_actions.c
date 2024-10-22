@@ -8,19 +8,6 @@
 
 
 /**
- * @brief 支持的协议信息
- */
-static const gchar *UPNP_SERVICE_SINK_PROTOCOL[] = {
-    "http-get:*:audio/mpeg:*",
-    "http-get:*:audio/mp3:*",
-    "http-get:*:audio/aac:*",
-    "http-get:*:audio/m4a:*",
-    "http-get:*:audio/wav:*",
-    "http-get:*:audio/flac:*",
-    NULL
-};
-
-/**
  * @brief 获取协议信息动作回调函数
  * @param service 服务
  * @param action 动作

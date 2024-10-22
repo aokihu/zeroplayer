@@ -17,6 +17,22 @@ static void on_service_available(GUPnPContextManager *manager, GUPnPContext *con
 static void on_service_unavailable(GUPnPContextManager *manager, GUPnPContext *context, gpointer user_data);
 
 /**
+ * @brief 支持的协议信息
+ */
+const gchar *UPNP_SERVICE_SINK_PROTOCOL[] = {
+    "http-get:*:audio/mpeg:*",
+    "http-get:*:audio/mp3:*",
+    "http-get:*:audio/aac:*",
+    "http-get:*:audio/m4a:*",
+    "http-get:*:audio/wav:*",
+    "http-get:*:audio/x-wav:*",
+    "http-get:*:audio/flac:*",
+    "http-get:*:audio/x-flac:*",
+    "http-get:*:audio/ogg:*",
+    NULL
+};
+
+/**
  * @brief 创建UPnP上下文
  * @return UPnP上下文
  */
@@ -74,6 +90,7 @@ static void on_service_available(
   }
   gupnp_context_manager_manage_root_device(manager, root_device);
 
+  // 服务设置
   on_connection_manager_service_available(root_device, user_data);
 
   gupnp_root_device_set_available(root_device, TRUE);
