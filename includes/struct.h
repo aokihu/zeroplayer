@@ -44,13 +44,17 @@ typedef struct
 /**
  * Player Context
  * @property uri - URI
- * @property next_uri - Next URI
+ * @property metadata - 当前资源元数据
+ * @property next_uri - 下一个资源
+ * @property next_metadata - 下一个资源元数据
  * @property pipeline - GStreamer Pipeline
  */
 typedef struct
 {
   gchar *uri;
+  gchar *metadata;
   gchar *next_uri;
+  gchar *next_metadata;
   GstElement *pipeline;
 } PlayerContext;
 
