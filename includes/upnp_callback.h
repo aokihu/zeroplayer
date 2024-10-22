@@ -31,6 +31,10 @@ void name(GUPnPService *service, gchar *variable, const GValue *value, gpointer 
 #define CONNECT_ACTION(action_name, callback) \
 g_signal_connect(service, "action-invoked::" #action_name, G_CALLBACK(callback), appContext)
 
+/* 查询链接函数统一声明 */
+#define CONNECT_QUERY(query_name, callback) \
+g_signal_connect(service, "query-variable::" #query_name, G_CALLBACK(callback), appContext)
+
 // ----------------------------------------- //
 //                                           //
 //              ConnectionManager            //
