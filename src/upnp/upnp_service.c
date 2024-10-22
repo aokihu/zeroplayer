@@ -27,11 +27,13 @@ void upnp_service_init(AppContext *app_context)
   app_context->upnp_context->id = 0;
 
   // 初始化UPnP
-  GUPnPContextManager *upnp_manager = gupnp_context_manager_create_full(GSSDP_UDA_VERSION_1_1, G_SOCKET_FAMILY_IPV4, 0);
-  app_context->upnp_context->upnp_manager = upnp_manager;
+  GUPnPContextManager *manager = gupnp_context_manager_create(0);
+  app_context->upnp_context->upnp_manager = manager;
 
-  g_signal_connect(upnp_manager, "context-available", G_CALLBACK(on_service_available), app_context);
-  g_signal_connect(upnp_manager, "context-unavailable", G_CALLBACK(on_service_unavailable), app_context);
+  g_signal_connect(manager, "context-available", G_CALLBACK(on_service_available), app_context);
+  g_signal_connect(manager, "context-unavailable", G_CALLBACK(on_service_unavailable), app_context);
+
+  g_print("UPnP Service initialized\n");
 }
 
 /**
@@ -56,11 +58,11 @@ static void on_service_available(
     gpointer user_data)
 {
   // 打印监听的端口
-  gchar *host_ip = gupnp_context_get_host_ip(context);
+  const char *host_ip = gupnp_context_get_host_ip(context);
   g_print("Service is available, listening on port %s\n", host_ip);
-  g_free(host_ip);
 
   GError *error = NULL;
+
   GUPnPRootDevice *root_device = gupnp_root_device_new(context, "description.xml", "./XML", &error);
   if (error)
   {
@@ -68,10 +70,13 @@ static void on_service_available(
     g_error_free(error);
     return;
   }
-
   gupnp_context_manager_manage_root_device(manager, root_device);
+
   on_connection_manager_service_available(root_device, user_data);
+
   gupnp_root_device_set_available(root_device, TRUE);
+
+  g_object_unref(root_device);
 }
 
 /**
