@@ -116,6 +116,46 @@ void player_stop(
   gst_element_set_state(player_context->pipeline, GST_STATE_NULL);
 }
 
+/**
+ * @brief 获取播放器传输状态
+ * @param player_context 播放器上下文
+ * @return 传输状态
+ */
+gchar *player_get_transport_state(PlayerContext *player_context)
+{
+  gchar *transport_state;
+  GstState state;
+  GstStateChangeReturn ret;
+
+  // 获取管道当前状态
+  ret = gst_element_get_state(player_context->pipeline, &state, NULL, GST_CLOCK_TIME_NONE);
+
+  // 根据状态返回对应的字符串
+  switch (state)
+  {
+  case GST_STATE_VOID_PENDING:
+    transport_state = "TRANSITIONING";
+    break;
+  case GST_STATE_NULL:
+    transport_state = "STOPPED";
+    break;
+  case GST_STATE_READY:
+    transport_state = "STOPPED";
+    break;
+  case GST_STATE_PAUSED:
+    transport_state = "PAUSED_PLAYBACK";
+    break;
+  case GST_STATE_PLAYING:
+    transport_state = "PLAYING";
+    break;
+  default:
+    transport_state = "UNKNOWN";
+    break;
+  }
+
+  return transport_state;
+}
+
 /* ------- 播放器音量 ------- */
 
 /**
@@ -172,7 +212,18 @@ void player_set_position(
     PlayerContext *player_context,
     gint64 position)
 {
-  g_object_set(player_context->pipeline, "position", position, NULL);
+  gboolean result = gst_element_seek(player_context->pipeline,
+                                     1.0,
+                                     GST_FORMAT_TIME,
+                                     GST_SEEK_FLAG_FLUSH,
+                                     GST_SEEK_TYPE_SET,
+                                     position,
+                                     GST_SEEK_TYPE_NONE,
+                                     GST_CLOCK_TIME_NONE);
+  if (!result)
+  {
+    g_warning("Failed to seek to position: %" G_GINT64_FORMAT, position);
+  }
 }
 
 /**
@@ -182,9 +233,15 @@ void player_set_position(
  */
 gint64 player_get_position(PlayerContext *player_context)
 {
-  gint64 position;
-  g_object_get(player_context->pipeline, "position", &position, NULL);
-  return position;
+  gint64 pos;
+  gst_element_query_position(player_context->pipeline, GST_FORMAT_TIME, &pos);
+  if (pos == -1)
+  {
+    g_warning("Failed to get position");
+  }
+
+  g_print("Position: %" G_GINT64_FORMAT "\n", pos);
+  return pos;
 }
 
 /* ------- 播放器播放进度 ------- */

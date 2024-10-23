@@ -10,7 +10,6 @@
 #include "struct.h"
 #include <glib.h>
 
-
 /**
  * @brief 设置媒体URI的动作回调函数
  * @param service 服务
@@ -21,50 +20,49 @@ void on_set_av_transport_uri_action(
     GUPnPService *service,
     GUPnPServiceAction *action,
     gpointer user_data)
-    
+
 {
     AppContext *appContext = (AppContext *)user_data;
-    gchar *instanceId = NULL; // 实例ID
-    gchar *currentUri = NULL; // 当前URI
+    gchar *instanceId = NULL;         // 实例ID
+    gchar *currentUri = NULL;         // 当前URI
     gchar *currentUriMetaData = NULL; // 当前URI元数据
-    
+
     // 从动作中获取参数
     gupnp_service_action_get(action,
                              "InstanceID", G_TYPE_STRING, &instanceId,
                              "CurrentURI", G_TYPE_STRING, &currentUri,
                              "CurrentURIMetaData", G_TYPE_STRING, &currentUriMetaData,
                              NULL);
-    
+
     // 检查参数是否有效
-    if (instanceId == NULL || currentUri == NULL) {
+    if (instanceId == NULL || currentUri == NULL)
+    {
         gupnp_service_action_return_error(action, 402, "Invalid Args");
         goto cleanup;
     }
-    
+
     // 更新状态变量
     gupnp_service_notify(service, "AVTransportURI", G_TYPE_STRING, currentUri, NULL);
     gupnp_service_notify(service, "AVTransportURIMetaData", G_TYPE_STRING, currentUriMetaData ? currentUriMetaData : "", NULL);
-    
+
     // 更新传输状态为TRANSITIONING
     gupnp_service_notify(service, "TransportState", G_TYPE_STRING, "TRANSITIONING", NULL);
-    
+
     // 在这里添加实际的媒体加载逻辑
     player_set_uri(appContext->player_context, currentUri);
 
     // 更新传输状态为STOPPED (假设媒体已加载但尚未播放)
     gupnp_service_notify(service, "TransportState", G_TYPE_STRING, "STOPPED", NULL);
-    
+
     // 动作成功完成
     gupnp_service_action_return_success(action);
-    
+
 cleanup:
     // 释放资源
     g_free(instanceId);
     g_free(currentUri);
     g_free(currentUriMetaData);
 }
-
-
 
 /**
  * @brief 获取设备能力的动作回调函数
@@ -79,23 +77,24 @@ void on_get_device_capabilities_action(
 {
     AppContext *appContext = (AppContext *)user_data;
     gchar *instanceId = NULL; // 实例ID
-    
+
     // 从动作中获取参数
     gupnp_service_action_get(action,
                              "InstanceID", G_TYPE_STRING, &instanceId,
                              NULL);
-    
+
     // 检查参数是否有效
-    if (instanceId == NULL) {
+    if (instanceId == NULL)
+    {
         gupnp_service_action_return_error(action, 402, "Invalid Args");
         goto cleanup;
     }
-    
+
     // 设置设备能力
-    const gboolean playMedia = TRUE; // 本设备支持播放功能
-    const gboolean recMedia = FALSE; // 本设备不支持录制功能
+    const gboolean playMedia = TRUE;                  // 本设备支持播放功能
+    const gboolean recMedia = FALSE;                  // 本设备不支持录制功能
     const gchar *recQualityModes = "NOT_IMPLEMENTED"; // 本设备不支持录制功能
-    
+
     // 返回设备能力
     gupnp_service_action_set(action,
                              "PlayMedia", G_TYPE_BOOLEAN, playMedia,
@@ -104,14 +103,11 @@ void on_get_device_capabilities_action(
                              NULL);
     // 动作成功完成
     gupnp_service_action_return_success(action);
-    
+
 cleanup:
     // 释放资源
     g_free(instanceId);
 }
-
-
-
 
 /**
  * @brief 播放的动作回调函数
@@ -126,46 +122,45 @@ void on_play_action(
 {
     AppContext *appContext = (AppContext *)user_data;
     gchar *instanceId = NULL; // 实例ID
-    gchar *speed = NULL; // 播放速度
-    
+    gchar *speed = NULL;      // 播放速度
+
     // 从动作中获取参数
     gupnp_service_action_get(action,
                              "InstanceID", G_TYPE_STRING, &instanceId,
                              "Speed", G_TYPE_STRING, &speed,
                              NULL);
-    
+
     // 检查参数是否有效
-    if (instanceId == NULL || speed == NULL) {
+    if (instanceId == NULL || speed == NULL)
+    {
         gupnp_service_action_return_error(action, 402, "无效参数");
         goto cleanup;
     }
-    
+
     // 检查当前是否有媒体加载
-    if (player_get_uri(appContext->player_context) == NULL) {
+    if (player_get_uri(appContext->player_context) == NULL)
+    {
         gupnp_service_action_return_error(action, 701, "转换无效");
         goto cleanup;
     }
-    
+
     // 开始播放
     player_play(appContext->player_context);
-    
+
     // 更新传输状态为PLAYING
     gupnp_service_notify(service, "TransportState", G_TYPE_STRING, "PLAYING", NULL);
-    
+
     // 更新播放速度
     gupnp_service_notify(service, "TransportPlaySpeed", G_TYPE_STRING, speed, NULL);
-    
+
     // 动作成功完成
     gupnp_service_action_return_success(action);
-    
+
 cleanup:
     // 释放资源
     g_free(instanceId);
     g_free(speed);
 }
-
-
-
 
 /**
  * @brief 暂停的动作回调函数
@@ -187,13 +182,15 @@ void on_pause_action(
                              NULL);
 
     // Check if parameters are valid
-    if (instanceId == NULL) {
+    if (instanceId == NULL)
+    {
         gupnp_service_action_return_error(action, 402, "Invalid Args");
         goto cleanup;
     }
 
     // Check if media is currently playing
-    if (player_get_uri(appContext->player_context) == NULL) {
+    if (player_get_uri(appContext->player_context) == NULL)
+    {
         gupnp_service_action_return_error(action, 701, "Transition not available");
         goto cleanup;
     }
@@ -211,9 +208,6 @@ cleanup:
     // Free resources
     g_free(instanceId);
 }
-
-
-
 
 /**
  * @brief 停止的动作回调函数
@@ -235,13 +229,15 @@ void on_stop_action(
                              NULL);
 
     // Check if parameters are valid
-    if (instanceId == NULL) {
+    if (instanceId == NULL)
+    {
         gupnp_service_action_return_error(action, 402, "Invalid Args");
         goto cleanup;
     }
 
     // Check if media is currently loaded
-    if (player_get_uri(appContext->player_context) == NULL) {
+    if (player_get_uri(appContext->player_context) == NULL)
+    {
         gupnp_service_action_return_error(action, 701, "Transition not available");
         goto cleanup;
     }
@@ -263,9 +259,6 @@ cleanup:
     g_free(instanceId);
 }
 
-
-
-
 /**
  * @brief 跳转的动作回调函数
  * @param service 服务
@@ -279,8 +272,8 @@ void on_seek_action(
 {
     AppContext *appContext = (AppContext *)user_data;
     gchar *instanceId = NULL; // Instance ID
-    gchar *unit = NULL; // Seek mode
-    gchar *target = NULL; // Target position
+    gchar *unit = NULL;       // Seek mode
+    gchar *target = NULL;     // Target position
 
     // Get parameters from the action
     gupnp_service_action_get(action,
@@ -290,35 +283,44 @@ void on_seek_action(
                              NULL);
 
     // Check if parameters are valid
-    if (instanceId == NULL || unit == NULL || target == NULL) {
+    if (instanceId == NULL || unit == NULL || target == NULL)
+    {
         gupnp_service_action_return_error(action, 402, "Invalid Args");
         goto cleanup;
     }
 
     // Check if media is currently loaded
-    if (player_get_uri(appContext->player_context) == NULL) {
+    if (player_get_uri(appContext->player_context) == NULL)
+    {
         gupnp_service_action_return_error(action, 701, "Transition not available");
         goto cleanup;
     }
 
     // Handle different seek modes
-    if (g_strcmp0(unit, "REL_TIME") == 0) {
+    if (g_strcmp0(unit, "REL_TIME") == 0)
+    {
         // Relative time seek
         gint64 target_ns = player_get_timestamp_from_string(target);
-        if (target_ns == -1) {
+        if (target_ns == -1)
+        {
             gupnp_service_action_return_error(action, 402, "Invalid Args");
             goto cleanup;
         }
         player_seek(appContext->player_context, target_ns);
-    } else if (g_strcmp0(unit, "ABS_TIME") == 0) {
+    }
+    else if (g_strcmp0(unit, "ABS_TIME") == 0)
+    {
         // Absolute time seek
         gint64 target_ns = player_get_timestamp_from_string(target);
-        if (target_ns == -1) {
+        if (target_ns == -1)
+        {
             gupnp_service_action_return_error(action, 402, "Invalid Args");
             goto cleanup;
         }
         player_set_position(appContext->player_context, target_ns);
-    } else {
+    }
+    else
+    {
         // Unsupported seek mode
         gupnp_service_action_return_error(action, 710, "Seek mode not supported");
         goto cleanup;
@@ -466,3 +468,91 @@ cleanup:
 //     g_free(instanceId);
 //     g_free(stateVariableValuePairs);
 // }
+
+/**
+ * @brief 获取当前Transport Actions的动作回调函数
+ * @param service 服务
+ * @param action 动作
+ * @param user_data 用户数据
+ */
+void on_get_current_transport_actions_action(
+    GUPnPService *service,
+    GUPnPServiceAction *action,
+    gpointer user_data)
+{
+    AppContext *appContext = (AppContext *)user_data;
+    gchar *instanceId = NULL; // 实例ID
+
+    // 从动作中获取参数
+    gupnp_service_action_get(action,
+                             "InstanceID", G_TYPE_STRING, &instanceId,
+                             NULL);
+
+    // 检查参数是否有效
+    if (instanceId == NULL)
+    {
+        gupnp_service_action_return_error(action, 402, "Invalid Args");
+        goto cleanup;
+    }
+
+    // 获取当前可用的传输操作
+    const gchar *currentTransportActions = "PLAY,PAUSE,STOP,SEEK"; // 示例操作，实际操作根据需要调整
+
+    // 返回当前传输操作
+    gupnp_service_action_set(action,
+                             "CurrentTransportActions", G_TYPE_STRING, currentTransportActions,
+                             NULL);
+
+    // 动作成功完成
+    gupnp_service_action_return_success(action);
+
+cleanup:
+    // 释放资源
+    g_free(instanceId);
+}
+
+/**
+ * @brief 获取传输信息的动作回调函数
+ * @param service 服务
+ * @param action 动作
+ * @param user_data 用户数据
+ */
+void on_get_transport_info_action(
+    GUPnPService *service,
+    GUPnPServiceAction *action,
+    gpointer user_data)
+{
+    AppContext *appContext = (AppContext *)user_data;
+    gchar *instanceId = NULL; // 实例ID
+
+    // 从动作中获取参数
+    gupnp_service_action_get(action,
+                             "InstanceID", G_TYPE_STRING, &instanceId,
+                             NULL);
+
+    // 检查参数是否有效
+    if (instanceId == NULL)
+    {
+        gupnp_service_action_return_error(action, 402, "Invalid Args");
+        goto cleanup;
+    }
+
+    // 获取当前传输状态
+    const gchar *currentTransportState = player_get_transport_state(appContext->player_context);
+    const gchar *currentTransportStatus = "OK";   // 假设状态正常
+    const gchar *currentTransportPlaySpeed = "1"; // 假设播放速度为1
+
+    // 返回传输信息
+    gupnp_service_action_set(action,
+                             "CurrentTransportState", G_TYPE_STRING, currentTransportState,
+                             "CurrentTransportStatus", G_TYPE_STRING, currentTransportStatus,
+                             "CurrentTransportPlaySpeed", G_TYPE_STRING, currentTransportPlaySpeed,
+                             NULL);
+
+    // 动作成功完成
+    gupnp_service_action_return_success(action);
+
+cleanup:
+    // 释放资源
+    g_free(instanceId);
+}

@@ -6,7 +6,6 @@
 #include "upnp_service.h"
 #include "struct.h"
 
-
 /**
  * @brief 获取协议信息动作回调函数
  * @param service 服务
@@ -19,8 +18,8 @@ void on_get_protocol_info_action(
     gpointer user_data)
 {
   // 定义支持的协议信息
-  const char *sourceProtocolInfo = g_strjoinv(",", UPNP_SERVICE_SINK_PROTOCOL);
-  const char *sinkProtocolInfo = ""; // 我们的设备不支持接收，所以为空
+  const char *sourceProtocolInfo = "";
+  const char *sinkProtocolInfo = g_strjoinv(",", UPNP_SERVICE_SINK_PROTOCOL);
 
   // 设置动作的返回值
   gupnp_service_action_set(action,
@@ -55,7 +54,6 @@ void on_get_current_connection_ids_action(
   gupnp_service_action_return_success(action);
 }
 
-
 /**
  * @brief 获取当前连接信息动作回调函数
  * @param service 服务
@@ -76,18 +74,18 @@ void on_get_current_connection_info_action(
   // 检查连接ID是否有效（在这个例子中，我们只支持ID为0的连接）
   if (connectionID != 0)
   {
-    gupnp_service_action_return_error(action, 706, "无效的连接ID");
+    gupnp_service_action_return_error(action, 706, "Invalid connection ID");
     return;
   }
 
   // 设置动作的返回值
   gupnp_service_action_set(action,
-                           "RcsID", G_TYPE_INT, -1,
+                           "RcsID", G_TYPE_INT, 0,
                            "AVTransportID", G_TYPE_INT, 0,
-                           "ProtocolInfo", G_TYPE_STRING, "http-get:*:audio/mpeg:*",
-                           "PeerConnectionManager", G_TYPE_STRING, "",
+                           "ProtocolInfo", G_TYPE_STRING, ":::",
+                           "PeerConnectionManager", G_TYPE_STRING, "/",
                            "PeerConnectionID", G_TYPE_INT, -1,
-                           "Direction", G_TYPE_STRING, "Output",
+                           "Direction", G_TYPE_STRING, "Input",
                            "Status", G_TYPE_STRING, "OK",
                            NULL);
 
@@ -123,30 +121,35 @@ void on_prepare_for_connection_action(
   g_print("Preparing connection: RemoteProtocolInfo=%s, PeerConnectionManager=%s, PeerConnectionID=%d, Direction=%s\n",
           remoteProtocolInfo, peerConnectionManager, peerConnectionID, direction);
 
+  // 不检查协议兼容性
   // Check if protocol is compatible
-  gboolean protocolCompatible = FALSE;
-  for (gint i = 0; UPNP_SERVICE_SINK_PROTOCOL[i] != NULL; i++) {
-    if (g_str_has_prefix(remoteProtocolInfo, UPNP_SERVICE_SINK_PROTOCOL[i])) {
-      protocolCompatible = TRUE;
-      break;
-    }
-  }
+  // gboolean protocolCompatible = FALSE;
+  // for (gint i = 0; UPNP_SERVICE_SINK_PROTOCOL[i] != NULL; i++)
+  // {
+  //   if (g_str_has_prefix(remoteProtocolInfo, UPNP_SERVICE_SINK_PROTOCOL[i]))
+  //   {
+  //     protocolCompatible = TRUE;
+  //     break;
+  //   }
+  // }
 
-  if (!protocolCompatible) {
-    gupnp_service_action_return_error(action, 701, "Incompatible protocol");
-    return;
-  }
+  // if (!protocolCompatible)
+  // {
+  //   gupnp_service_action_return_error(action, 701, "Incompatible protocol");
+  //   return;
+  // }
 
   // Check if direction is correct
-  if (g_strcmp0(direction, "Input") != 0) {
+  if (g_strcmp0(direction, "Input") != 0)
+  {
     gupnp_service_action_return_error(action, 702, "Unsupported flow direction");
     return;
   }
 
   // Generate new connection ID
   gint newConnectionID = appContext->upnp_context->nextConnectionID++;
-  gint rcsID = 0;  // Assume RCS ID is always 0
-  gint avTransportID = newConnectionID;  // Assume AVTransport ID is the same as Connection ID
+  gint rcsID = 0;                       // Assume RCS ID is always 0
+  gint avTransportID = newConnectionID; // Assume AVTransport ID is the same as Connection ID
 
   // Set action return values
   gupnp_service_action_set(action,
@@ -156,7 +159,7 @@ void on_prepare_for_connection_action(
                            NULL);
 
   // Update current connection ID list
-  gchar *currentConnectionIDs = g_strdup_printf("%s%s%d", 
+  gchar *currentConnectionIDs = g_strdup_printf("%s%s%d",
                                                 appContext->upnp_context->currentConnectionIDs,
                                                 (appContext->upnp_context->currentConnectionIDs[0] != '\0') ? "," : "",
                                                 newConnectionID);
