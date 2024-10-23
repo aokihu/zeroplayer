@@ -214,6 +214,29 @@
       </argumentList>
     </action>
 
+    <!-- 下一曲 -->
+    <action>
+      <name>Next</name>
+      <argumentList>
+        <argument>
+          <name>InstanceID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+
+    <!-- 上一曲 -->
+    <action>
+      <name>Previous</name>
+      <argumentList>
+        <argument>
+          <name>InstanceID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
 
     <!-- 获取状态变量 -->
     <action>
