@@ -77,6 +77,13 @@ UPNP_ACTION_CALLBACK(on_get_state_variables_action);           // 获取状态�
 UPNP_ACTION_CALLBACK(on_set_state_variables_action);           // 设置状态变量的回调函数
 UPNP_ACTION_CALLBACK(on_get_current_transport_actions_action); // 获取当前Transport Actions的回调函数
 UPNP_ACTION_CALLBACK(on_get_transport_info_action);            // 获取传输信息的回调函数
+UPNP_ACTION_CALLBACK(on_get_transport_settings_action);        // 获取传输设置的回调函数
+UPNP_ACTION_CALLBACK(on_get_position_info_action);             // 获取位置信息的回调函数
+UPNP_ACTION_CALLBACK(on_set_next_av_transport_uri_action);     // 设置下一个AV传输URI的回调函数
+UPNP_ACTION_CALLBACK(on_get_media_info_action);                // 获取媒体信息的回调函数
+UPNP_ACTION_CALLBACK(on_get_media_info_ext_action);            // 获取媒体信息扩展的回调函数
+UPNP_ACTION_CALLBACK(on_next_action);                          // 下一曲的回调函数
+UPNP_ACTION_CALLBACK(on_previous_action);                      // 上一曲的回调函数
 
 /* Query Callback Functions */
 UPNP_QUERY_CALLBACK(on_get_transport_state_query);        // 获取传输状态的查询回调函数

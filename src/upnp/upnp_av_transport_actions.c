@@ -512,7 +512,7 @@ cleanup:
 }
 
 /**
- * @brief 获取传输信息的动作回调函数
+ * @brief 获取传输信息的动作回��函数
  * @param service 服务
  * @param action 动作
  * @param user_data 用户数据
@@ -554,5 +554,309 @@ void on_get_transport_info_action(
 
 cleanup:
     // 释放资源
+    g_free(instanceId);
+}
+
+/**
+ * @brief 获取传输设置的动作回调函数
+ */
+void on_get_transport_settings_action(
+    GUPnPService *service,
+    GUPnPServiceAction *action,
+    gpointer user_data)
+{
+    AppContext *appContext = (AppContext *)user_data;
+    gchar *instanceId = NULL; // 实例ID
+
+    // 从动作中获取参数
+    gupnp_service_action_get(action,
+                             "InstanceID", G_TYPE_STRING, &instanceId,
+                             NULL);
+
+    // 检查参数是否有效
+    if (instanceId == NULL)
+    {
+        gupnp_service_action_return_error(action, 402, "无效参数");
+        goto cleanup;
+    }
+
+    // 设置传输设置
+    const gchar *playMode = "NORMAL";                // 播放模式
+    const gchar *recQualityMode = "NOT_IMPLEMENTED"; // 录制质量模式
+
+    // 返回传输设置
+    gupnp_service_action_set(action,
+                             "PlayMode", G_TYPE_STRING, playMode,
+                             "RecQualityMode", G_TYPE_STRING, recQualityMode,
+                             NULL);
+
+    // 动作成功完成
+    gupnp_service_action_return_success(action);
+
+cleanup:
+    g_free(instanceId);
+}
+
+/**
+ * @brief 获取位置信息的动作回调函数
+ */
+void on_get_position_info_action(
+    GUPnPService *service,
+    GUPnPServiceAction *action,
+    gpointer user_data)
+{
+    AppContext *appContext = (AppContext *)user_data;
+    gchar *instanceId = NULL; // 实例ID
+
+    // 从动作中获取参数
+    gupnp_service_action_get(action,
+                             "InstanceID", G_TYPE_STRING, &instanceId,
+                             NULL);
+
+    // 检查参数是否有效
+    if (instanceId == NULL)
+    {
+        gupnp_service_action_return_error(action, 402, "无效参数");
+        goto cleanup;
+    }
+
+    // 获取位置信息
+    guint track = 1;                                              // 当前曲目编号
+    gchar *trackDuration = "00:00:00";                            // 曲目时长
+    gchar *trackMetaData = "";                                    // 曲目元数据
+    gchar *trackURI = player_get_uri(appContext->player_context); // 曲目URI
+    gchar *relTime = "00:00:00";                                  // 相对时间
+    gchar *absTime = "00:00:00";                                  // 绝对时间
+    gint relCount = 0;                                            // 相对计数
+    gint absCount = 0;                                            // 绝对计数
+
+    // 返回位置信息
+    gupnp_service_action_set(action,
+                             "Track", G_TYPE_UINT, track,
+                             "TrackDuration", G_TYPE_STRING, trackDuration,
+                             "TrackMetaData", G_TYPE_STRING, trackMetaData,
+                             "TrackURI", G_TYPE_STRING, trackURI,
+                             "RelTime", G_TYPE_STRING, relTime,
+                             "AbsTime", G_TYPE_STRING, absTime,
+                             "RelCount", G_TYPE_INT, relCount,
+                             "AbsCount", G_TYPE_INT, absCount,
+                             NULL);
+
+    // 动作成功完成
+    gupnp_service_action_return_success(action);
+
+cleanup:
+    g_free(instanceId);
+}
+
+/**
+ * @brief 设置下一个AV传输URI的动作回调函数
+ */
+void on_set_next_av_transport_uri_action(
+    GUPnPService *service,
+    GUPnPServiceAction *action,
+    gpointer user_data)
+{
+    AppContext *appContext = (AppContext *)user_data;
+    gchar *instanceId = NULL;      // 实例ID
+    gchar *nextUri = NULL;         // 下一个URI
+    gchar *nextUriMetaData = NULL; // 下一个URI元数据
+
+    // 从动作中获取参数
+    gupnp_service_action_get(action,
+                             "InstanceID", G_TYPE_STRING, &instanceId,
+                             "NextURI", G_TYPE_STRING, &nextUri,
+                             "NextURIMetaData", G_TYPE_STRING, &nextUriMetaData,
+                             NULL);
+
+    // 检查参数是否有效
+    if (instanceId == NULL)
+    {
+        gupnp_service_action_return_error(action, 402, "无效参数");
+        goto cleanup;
+    }
+
+    // 更新状态变量
+    gupnp_service_notify(service, "NextAVTransportURI", G_TYPE_STRING, nextUri, NULL);
+    gupnp_service_notify(service, "NextAVTransportURIMetaData", G_TYPE_STRING, nextUriMetaData ? nextUriMetaData : "", NULL);
+
+    // 动作成功完成
+    gupnp_service_action_return_success(action);
+
+cleanup:
+    g_free(instanceId);
+    g_free(nextUri);
+    g_free(nextUriMetaData);
+}
+
+/**
+ * @brief 获取媒体信息的动作回调函数
+ */
+void on_get_media_info_action(
+    GUPnPService *service,
+    GUPnPServiceAction *action,
+    gpointer user_data)
+{
+    AppContext *appContext = (AppContext *)user_data;
+    gchar *instanceId = NULL; // 实例ID
+
+    // 从动作中获取参数
+    gupnp_service_action_get(action,
+                             "InstanceID", G_TYPE_STRING, &instanceId,
+                             NULL);
+
+    // 检查参数是否有效
+    if (instanceId == NULL)
+    {
+        gupnp_service_action_return_error(action, 402, "无效参数");
+        goto cleanup;
+    }
+
+    // 获取媒体信息
+    guint nrTracks = 1;                                             // 曲目数量
+    gchar *mediaDuration = "00:00:00";                              // 媒体时长
+    gchar *currentUri = player_get_uri(appContext->player_context); // 当前URI
+    gchar *currentUriMetaData = "";                                 // 当前URI元数据
+    gchar *nextUri = "";                                            // 下一个URI
+    gchar *nextUriMetaData = "";                                    // 下一个URI元数据
+    gchar *playMedium = "NETWORK";                                  // 播放介质
+    gchar *recordMedium = "NOT_IMPLEMENTED";                        // 录制介质
+    gchar *writeStatus = "NOT_IMPLEMENTED";                         // 写入状态
+
+    // 返回媒体信息
+    gupnp_service_action_set(action,
+                             "NrTracks", G_TYPE_UINT, nrTracks,
+                             "MediaDuration", G_TYPE_STRING, mediaDuration,
+                             "CurrentURI", G_TYPE_STRING, currentUri,
+                             "CurrentURIMetaData", G_TYPE_STRING, currentUriMetaData,
+                             "NextURI", G_TYPE_STRING, nextUri,
+                             "NextURIMetaData", G_TYPE_STRING, nextUriMetaData,
+                             "PlayMedium", G_TYPE_STRING, playMedium,
+                             "RecordMedium", G_TYPE_STRING, recordMedium,
+                             "WriteStatus", G_TYPE_STRING, writeStatus,
+                             NULL);
+
+    // 动作成功完成
+    gupnp_service_action_return_success(action);
+
+cleanup:
+    g_free(instanceId);
+}
+
+/**
+ * @brief 获取媒体信息扩展的动作回调函数
+ */
+void on_get_media_info_ext_action(
+    GUPnPService *service,
+    GUPnPServiceAction *action,
+    gpointer user_data)
+{
+    AppContext *appContext = (AppContext *)user_data;
+    gchar *instanceId = NULL; // 实例ID
+
+    // 从动作中获取参数
+    gupnp_service_action_get(action,
+                             "InstanceID", G_TYPE_STRING, &instanceId,
+                             NULL);
+
+    // 检查参数是否有效
+    if (instanceId == NULL)
+    {
+        gupnp_service_action_return_error(action, 402, "无效参数");
+        goto cleanup;
+    }
+
+    // 获取媒体信息
+    gchar *currentType = "TRACK_AWARE";                             // 当前类型
+    guint nrTracks = 1;                                             // 曲目数量
+    gchar *mediaDuration = "00:00:00";                              // 媒体时长
+    gchar *currentUri = player_get_uri(appContext->player_context); // 当前URI
+    gchar *currentUriMetaData = "";                                 // 当前URI元数据
+    gchar *nextUri = "";                                            // 下一个URI
+    gchar *nextUriMetaData = "";                                    // 下一个URI元数据
+    gchar *playMedium = "NETWORK";                                  // 播放介质
+    gchar *recordMedium = "NOT_IMPLEMENTED";                        // 录制介质
+    gchar *writeStatus = "NOT_IMPLEMENTED";                         // 写入状态
+
+    // 返回媒体信息
+    gupnp_service_action_set(action,
+                             "CurrentType", G_TYPE_STRING, currentType,
+                             "NrTracks", G_TYPE_UINT, nrTracks,
+                             "MediaDuration", G_TYPE_STRING, mediaDuration,
+                             "CurrentURI", G_TYPE_STRING, currentUri,
+                             "CurrentURIMetaData", G_TYPE_STRING, currentUriMetaData,
+                             "NextURI", G_TYPE_STRING, nextUri,
+                             "NextURIMetaData", G_TYPE_STRING, nextUriMetaData,
+                             "PlayMedium", G_TYPE_STRING, playMedium,
+                             "RecordMedium", G_TYPE_STRING, recordMedium,
+                             "WriteStatus", G_TYPE_STRING, writeStatus,
+                             NULL);
+
+    // 动作成功完成
+    gupnp_service_action_return_success(action);
+
+cleanup:
+    g_free(instanceId);
+}
+
+/**
+ * @brief 下一曲的动作回调函数
+ */
+void on_next_action(
+    GUPnPService *service,
+    GUPnPServiceAction *action,
+    gpointer user_data)
+{
+    AppContext *appContext = (AppContext *)user_data;
+    gchar *instanceId = NULL; // 实例ID
+
+    // 从动作中获取参数
+    gupnp_service_action_get(action,
+                             "InstanceID", G_TYPE_STRING, &instanceId,
+                             NULL);
+
+    // 检查参数是否有效
+    if (instanceId == NULL)
+    {
+        gupnp_service_action_return_error(action, 402, "无效参数");
+        goto cleanup;
+    }
+
+    // TODO: 实现下一曲功能
+    // 目前返回错误，因为还未实现播放列表功能
+    gupnp_service_action_return_error(action, 701, "转换无效");
+
+cleanup:
+    g_free(instanceId);
+}
+
+/**
+ * @brief 上一曲的动作回调函数
+ */
+void on_previous_action(
+    GUPnPService *service,
+    GUPnPServiceAction *action,
+    gpointer user_data)
+{
+    AppContext *appContext = (AppContext *)user_data;
+    gchar *instanceId = NULL; // 实例ID
+
+    // 从动作中获取参数
+    gupnp_service_action_get(action,
+                             "InstanceID", G_TYPE_STRING, &instanceId,
+                             NULL);
+
+    // 检查参数是否有效
+    if (instanceId == NULL)
+    {
+        gupnp_service_action_return_error(action, 402, "无效参数");
+        goto cleanup;
+    }
+
+    // TODO: 实现上一曲功能
+    // 目前返回错误，因为还未实现播放列表功能
+    gupnp_service_action_return_error(action, 701, "转换无效");
+
+cleanup:
     g_free(instanceId);
 }

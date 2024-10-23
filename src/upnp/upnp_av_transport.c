@@ -16,7 +16,7 @@ void on_av_transport_service_available(
 
   // 创建服务
   GUPnPServiceInfo *service_info = gupnp_device_info_get_service(GUPNP_DEVICE_INFO(rd),
-                                                                 "urn:schemas-upnp-org:service:AVTransport:1");
+                                                                 "urn:schemas-upnp-org:service:AVTransport:3");
 
   if (service_info)
   {
@@ -27,10 +27,15 @@ void on_av_transport_service_available(
     CONNECT_ACTION(Pause, on_pause_action);
     CONNECT_ACTION(Stop, on_stop_action);
     CONNECT_ACTION(Seek, on_seek_action);
-    // CONNECT_ACTION(GetStateVariables, on_get_state_variables_action);
-    // CONNECT_ACTION(SetStateVariables, on_set_state_variables_action);
     CONNECT_ACTION(GetCurrentTransportActions, on_get_current_transport_actions_action);
     CONNECT_ACTION(GetTransportInfo, on_get_transport_info_action);
+    CONNECT_ACTION(GetTransportSettings, on_get_transport_settings_action);
+    CONNECT_ACTION(GetPositionInfo, on_get_position_info_action);
+    CONNECT_ACTION(SetNextAVTransportURI, on_set_next_av_transport_uri_action);
+    CONNECT_ACTION(GetMediaInfo, on_get_media_info_action);
+    CONNECT_ACTION(GetMediaInfoExt, on_get_media_info_ext_action);
+    CONNECT_ACTION(Next, on_next_action);
+    CONNECT_ACTION(Previous, on_previous_action);
     g_print("AVTransport Ready.\n");
   }
   else

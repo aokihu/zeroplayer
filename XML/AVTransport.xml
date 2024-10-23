@@ -8,30 +8,52 @@
   <actionList>
     <!-- 获取设备能力 -->
     <action>
-      <name>GetDeviceCapabilities</name>
-      <argumentList>
-        <argument>
-          <name>InstanceID</name>
-          <direction>in</direction>
-          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>PlayMedia</name>
-          <direction>out</direction>
-          <relatedStateVariable>A_ARG_TYPE_PlayMedia</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>RecMedia</name>
-          <direction>out</direction>
-          <relatedStateVariable>A_ARG_TYPE_RecMedia</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>RecQualityModes</name>
-          <direction>out</direction>
-          <relatedStateVariable>A_ARG_TYPE_RecQualityModes</relatedStateVariable>
-        </argument>
-      </argumentList>
-    </action>
+			<name>GetDeviceCapabilities</name>
+			<argumentList>
+				<argument>
+					<name>InstanceID</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>PlayMedia</name>
+					<direction>out</direction>
+					<relatedStateVariable>PossiblePlaybackStorageMedia</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>RecMedia</name>
+					<direction>out</direction>
+					<relatedStateVariable>PossibleRecordStorageMedia</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>RecQualityModes</name>
+					<direction>out</direction>
+					<relatedStateVariable>PossibleRecordQualityModes</relatedStateVariable>
+				</argument>
+			</argumentList>
+		</action>
+
+    <!-- 获取传输设置 -->
+    <action>
+			<name>GetTransportSettings</name>
+			<argumentList>
+				<argument>
+					<name>InstanceID</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>PlayMode</name>
+					<direction>out</direction>
+					<relatedStateVariable>CurrentPlayMode</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>RecQualityMode</name>
+					<direction>out</direction>
+					<relatedStateVariable>CurrentRecordQualityMode</relatedStateVariable>
+				</argument>
+			</argumentList>
+		</action>
 
     <!-- 获取当前传输动作 -->
     <action>
@@ -79,55 +101,55 @@
 
     <!-- 获取位置信息 -->
     <action>
-      <name>GetPositionInfo</name>
-      <argumentList>
-        <argument>
-          <name>InstanceID</name>
-          <direction>in</direction>
-          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>Track</name>
-          <direction>out</direction>
-          <relatedStateVariable>Track</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>TrackDuration</name>
-          <direction>out</direction>
-          <relatedStateVariable>TrackDuration</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>TrackMetaData</name>
-          <direction>out</direction>
-          <relatedStateVariable>TrackMetaData</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>TrackURI</name>
-          <direction>out</direction>
-          <relatedStateVariable>TrackURI</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>RelTimePosition</name>
-          <direction>out</direction>
-          <relatedStateVariable>RelTimePosition</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>AbsTimePosition</name>
-          <direction>out</direction>
-          <relatedStateVariable>AbsTimePosition</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>RelCount</name>
-          <direction>out</direction>
-          <relatedStateVariable>RelCount</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>AbsCount</name>
-          <direction>out</direction>
-          <relatedStateVariable>AbsCount</relatedStateVariable>
-        </argument>
-      </argumentList>
-    </action>
+			<name>GetPositionInfo</name>
+			<argumentList>
+				<argument>
+					<name>InstanceID</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>Track</name>
+					<direction>out</direction>
+					<relatedStateVariable>CurrentTrack</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>TrackDuration</name>
+					<direction>out</direction>
+					<relatedStateVariable>CurrentTrackDuration</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>TrackMetaData</name>
+					<direction>out</direction>
+					<relatedStateVariable>CurrentTrackMetaData</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>TrackURI</name>
+					<direction>out</direction>
+					<relatedStateVariable>CurrentTrackURI</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>RelTime</name>
+					<direction>out</direction>
+					<relatedStateVariable>RelativeTimePosition</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>AbsTime</name>
+					<direction>out</direction>
+					<relatedStateVariable>AbsoluteTimePosition</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>RelCount</name>
+					<direction>out</direction>
+					<relatedStateVariable>RelativeCounterPosition</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>AbsCount</name>
+					<direction>out</direction>
+					<relatedStateVariable>AbsoluteCounterPosition</relatedStateVariable>
+				</argument>
+			</argumentList>
+		</action>
 
     <!-- 设置AV传输URI -->
     <action>
@@ -150,6 +172,149 @@
         </argument>
       </argumentList>
     </action>
+
+    <!-- 设置下一传输URI -->
+    <action>
+      <name>SetNextAVTransportURI</name>
+      <argumentList>
+        <argument>
+          <name>InstanceID</name>
+          <direction>in</direction>
+          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>NextURI</name>
+          <direction>in</direction>
+          <relatedStateVariable>NextAVTransportURI</relatedStateVariable>
+        </argument>
+        <argument>
+          <name>NextURIMetaData</name>
+          <direction>in</direction>
+          <relatedStateVariable>NextAVTransportURIMetaData</relatedStateVariable>
+        </argument>
+      </argumentList>
+    </action>
+
+    <!-- 获取媒体信息 -->
+    <action>
+			<name>GetMediaInfo</name>
+			<argumentList>
+				<argument>
+					<name>InstanceID</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>NrTracks</name>
+					<direction>out</direction>
+					<relatedStateVariable>NumberOfTracks</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>MediaDuration</name>
+					<direction>out</direction>
+					<relatedStateVariable>CurrentMediaDuration</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>CurrentURI</name>
+					<direction>out</direction>
+					<relatedStateVariable>AVTransportURI</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>CurrentURIMetaData</name>
+					<direction>out</direction>
+					<relatedStateVariable>AVTransportURIMetaData</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>NextURI</name>
+					<direction>out</direction>
+					<relatedStateVariable>NextAVTransportURI</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>NextURIMetaData</name>
+					<direction>out</direction>
+					<relatedStateVariable>NextAVTransportURIMetaData</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>PlayMedium</name>
+					<direction>out</direction>
+					<relatedStateVariable>PlaybackStorageMedium</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>RecordMedium</name>
+					<direction>out</direction>
+					<relatedStateVariable>RecordStorageMedium</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>WriteStatus</name>
+					<direction>out</direction>
+					<relatedStateVariable>RecordMediumWriteStatus</relatedStateVariable>
+				</argument>
+			</argumentList>
+		</action>
+
+    <!-- 获取媒体信息扩展 -->
+    <action>
+			<name>GetMediaInfo_Ext</name>
+			<argumentList>
+				<argument>
+					<name>InstanceID</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>CurrentType</name>
+					<direction>out</direction>
+					<relatedStateVariable>CurrentMediaCategory</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>NrTracks</name>
+					<direction>out</direction>
+					<relatedStateVariable>NumberOfTracks</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>MediaDuration</name>
+					<direction>out</direction>
+					<relatedStateVariable>CurrentMediaDuration</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>CurrentURI</name>
+					<direction>out</direction>
+					<relatedStateVariable>AVTransportURI</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>CurrentURIMetaData</name>
+					<direction>out</direction>
+					<relatedStateVariable>AVTransportURIMetaData</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>NextURI</name>
+					<direction>out</direction>
+					<relatedStateVariable>NextAVTransportURI</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>NextURIMetaData</name>
+					<direction>out</direction>
+					<relatedStateVariable>NextAVTransportURIMetaData</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>PlayMedium</name>
+					<direction>out</direction>
+					<relatedStateVariable>PlaybackStorageMedium</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>RecordMedium</name>
+					<direction>out</direction>
+					<relatedStateVariable>RecordStorageMedium</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>WriteStatus</name>
+					<direction>out</direction>
+					<relatedStateVariable>RecordMediumWriteStatus</relatedStateVariable>
+				</argument>
+			</argumentList>
+		</action>
+
+
     
     <!-- 播放 -->
     <action>
@@ -194,25 +359,25 @@
 
     <!-- 跳转 -->
     <action>
-      <name>Seek</name>
-      <argumentList>
-        <argument>
-          <name>InstanceID</name>
-          <direction>in</direction>
-          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>Unit</name>
-          <direction>in</direction>
-          <relatedStateVariable>SeekUnit</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>Target</name>
-          <direction>in</direction>
-          <relatedStateVariable>RelativeTimePosition</relatedStateVariable>
-        </argument>
-      </argumentList>
-    </action>
+			<name>Seek</name>
+			<argumentList>
+				<argument>
+					<name>InstanceID</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>Unit</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_SeekMode</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>Target</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_SeekTarget</relatedStateVariable>
+				</argument>
+			</argumentList>
+		</action>
 
     <!-- 下一曲 -->
     <action>
@@ -274,7 +439,8 @@
   </actionList>
   
   <serviceStateTable>
-    <!-- 传输状态 -->
+
+    <!-- 当前传输状态 -->
     <stateVariable sendEvents="yes">
       <name>TransportState</name>
       <dataType>string</dataType>
@@ -287,7 +453,7 @@
       </allowedValueList>
     </stateVariable>
 
-    <!-- 传输状态的详细状态 -->
+    <!-- 传输状态 -->
     <stateVariable sendEvents="yes">
       <name>TransportStatus</name>
       <dataType>string</dataType>
@@ -295,6 +461,108 @@
         <allowedValue>OK</allowedValue>
         <allowedValue>ERROR_OCCURRED</allowedValue>
       </allowedValueList>
+    </stateVariable>
+
+    <!-- 当前媒体类别 -->
+    <stateVariable sendEvents="no">
+			<name>CurrentMediaCategory</name>
+			<dataType>string</dataType>
+      <allowedValueList>
+        <allowedValue>NO_MEDIA</allowedValue>
+        <allowedValue>TRACK_AWARE</allowedValue>
+        <allowedValue>TRACK_UNAWARE</allowedValue>
+      </allowedValueList>
+    </stateVariable>
+
+    <!-- 播放存储介质 -->
+    <stateVariable sendEvents="no">
+      <name>PlaybackStorageMedium</name>
+      <dataType>string</dataType>
+      <allowedValueList>
+        <allowedValue>NETWORK</allowedValue>
+        <allowedValue>LOCAL</allowedValue>
+      </allowedValueList>
+    </stateVariable>
+
+    <!-- 可能的播放存储介质 -->
+    <stateVariable sendEvents="no">
+      <name>PossiblePlaybackStorageMedia</name>
+      <dataType>string</dataType>
+      <allowedValueList>
+        <allowedValue>NETWORK</allowedValue>
+        <allowedValue>LOCAL</allowedValue>
+      </allowedValueList>
+    </stateVariable>
+
+    <!-- 当前播放模式 -->
+    <stateVariable sendEvents="no">
+      <name>CurrentPlayMode</name>
+      <dataType>string</dataType>
+      <allowedValueList>
+        <allowedValue>NORMAL</allowedValue>
+        <allowedValue>REPEAT_ALL</allowedValue>
+        <allowedValue>REPEAT_ONE</allowedValue>
+        <allowedValue>SHUFFLE</allowedValue>
+      </allowedValueList>
+      <defaultValue>NORMAL</defaultValue>
+    </stateVariable>
+
+    <!-- 传输播放速度 -->
+    <stateVariable sendEvents="no">
+      <name>TransportPlaySpeed</name>
+      <dataType>string</dataType>
+      <allowedValueList>
+        <allowedValue>1</allowedValue>
+      </allowedValueList>
+    </stateVariable>
+
+    <!-- 轨道数量 -->
+    <stateVariable sendEvents="no">
+      <name>NumberOfTracks</name>
+      <dataType>ui4</dataType>
+      <allowedValueRange>
+        <minimum>0</minimum>
+      </allowedValueRange>
+    </stateVariable>
+
+    <!-- 当前音轨 -->
+    <stateVariable sendEvents="no">
+      <name>CurrentTrack</name>
+      <dataType>ui4</dataType>
+      <allowedValueRange>
+        <minimum>0</minimum>
+        <step>1</step>
+      </allowedValueRange>
+    </stateVariable>
+
+    <!-- 当前音轨时长 -->
+    <stateVariable sendEvents="no">
+      <name>CurrentTrackDuration</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 当前媒体时长 -->
+    <stateVariable sendEvents="no">
+      <name>CurrentMediaDuration</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 当前音轨URI -->
+    <stateVariable sendEvents="no">
+      <name>CurrentTrackURI</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 当前音轨元数据 -->
+    <stateVariable sendEvents="no">
+      <name>CurrentTrackMetaData</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 当前音轨持续时间 -->
+    <stateVariable sendEvents="no">
+      <name>CurrentTrackDuration</name>
+      <dataType>string</dataType>
     </stateVariable>
 
     <!-- 当前传输的URI -->
@@ -321,52 +589,45 @@
       <dataType>string</dataType>
     </stateVariable>
 
-    <!-- 当前音轨 -->
+    <!-- 相对时间位置 -->
     <stateVariable sendEvents="no">
-      <name>CurrentTrack</name>
+      <name>RelativeTimePosition</name>
       <dataType>string</dataType>
     </stateVariable>
 
-    <!-- 当前音轨URI -->
-    <stateVariable sendEvents="no">
-      <name>CurrentTrackURI</name>
+    <!-- 绝对时间位置 -->
+		<stateVariable sendEvents="no">
+      <name>AbsoluteTimePosition</name>
       <dataType>string</dataType>
+		</stateVariable>
+
+    <!-- 相对计数器位置 -->
+		<stateVariable sendEvents="no">
+      <name>RelativeCounterPosition</name>
+      <dataType>i4</dataType>
     </stateVariable>
 
-    <!-- 当前音轨元数据 -->
-    <stateVariable sendEvents="no">
-      <name>CurrentTrackMetaData</name>
-      <dataType>string</dataType>
-    </stateVariable>
-
-    <!-- 当前音轨持续时间 -->
-    <stateVariable sendEvents="no">
-      <name>CurrentTrackDuration</name>
-      <dataType>string</dataType>
-    </stateVariable>
-
-    <!-- 实例ID -->
-    <stateVariable sendEvents="no">
-      <name>A_ARG_TYPE_InstanceID</name>
+    <!-- 绝对计数器位置 -->
+		<stateVariable sendEvents="no">
+      <name>AbsoluteCounterPosition</name>
       <dataType>ui4</dataType>
     </stateVariable>
 
-    <!-- 是否支持播放媒体 -->
-    <stateVariable sendEvents="no">
-      <name>A_ARG_TYPE_PlayMedia</name>
-      <dataType>boolean</dataType>
-    </stateVariable>
-
-    <!-- 是否支持录制媒体 -->
-    <stateVariable sendEvents="no">
-      <name>A_ARG_TYPE_RecMedia</name>
-      <dataType>boolean</dataType>
-    </stateVariable>
-
-    <!-- 录制质量模式 -->
-    <stateVariable sendEvents="no">
-      <name>A_ARG_TYPE_RecQualityModes</name>
+    <!-- 最后更改 -->
+    <stateVariable sendEvents="yes">
+      <name>LastChange</name>
       <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- DRM状态 -->
+    <stateVariable sendEvents="no">
+      <name>DRMState</name>
+      <dataType>string</dataType>
+      <allowedValueList>
+        <allowedValue>OK</allowedValue>
+        <allowedValue>UNKNOWN</allowedValue>
+      </allowedValueList>
+      <defaultValue>UNKNOWN</defaultValue>
     </stateVariable>
 
     <!-- 当前传输的动作 -->
@@ -402,5 +663,45 @@
       <name>TrackMetaData</name>
       <dataType>string</dataType>
     </stateVariable>
+
+    <!-- 跳转模式 -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_SeekMode</name>
+      <dataType>string</dataType>
+      <allowedValueList>
+        <allowedValue>TRACK_NR</allowedValue>
+      </allowedValueList>
+    </stateVariable>
+
+    <!-- 跳转目标 -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_SeekTarget</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 实例ID -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_InstanceID</name>
+      <dataType>ui4</dataType>
+    </stateVariable>
+
+    <!-- 是否支持播放媒体 -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_PlayMedia</name>
+      <dataType>boolean</dataType>
+    </stateVariable>
+
+    <!-- 是否支持录制媒体 -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_RecMedia</name>
+      <dataType>boolean</dataType>
+    </stateVariable>
+
+    <!-- 录制质量模式 -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_RecQualityModes</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
   </serviceStateTable>
 </scpd>
