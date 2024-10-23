@@ -14,10 +14,8 @@
 #define PLAYBIN_NAME "playbin"
 
 /* 工具方法定义 */
-gint64 *player_get_timestamp_from_string(gchar* timestamp);
-gchar  *player_util_get_timestamp_string(gint64 timestamp);
-
-
+gint64 player_get_timestamp_from_string(gchar *timestamp);
+gchar *player_util_get_timestamp_string(gint64 timestamp);
 
 /* Function Declarations */
 PlayerContext *player_new(void);                                  // Create a new player context
@@ -34,5 +32,6 @@ void player_set_position(PlayerContext *player, gint64 position); // Set the pos
 gint64 player_get_position(PlayerContext *player);                // Get the position of the player
 void player_set_mute(PlayerContext *player, gboolean mute);       // Set the mute state of the player
 gboolean player_get_mute(PlayerContext *player);                  // Get the mute state of the player
+gchar *player_get_transport_state(PlayerContext *player);         // Get the transport state of the player
 
 #endif // __ZERO_PLAYER_PLAYER_H__
