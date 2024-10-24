@@ -11,4 +11,6 @@
                             ZEROPLAYER_VERSION_MINOR * 100 + \
                             ZEROPLAYER_VERSION_PATCH)
 
+#define VERSION "1.0.1"  // 增加小版本号
+
 #endif /* VERSION_H */

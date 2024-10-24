@@ -17,7 +17,7 @@ UPNP_DIR = $(SRC_DIR)/upnp
 SOURCES = $(wildcard $(SRC_DIR)/*.c) \
           $(wildcard $(CLI_DIR)/*.c) \
           $(wildcard $(PLAYBACK_DIR)/*.c) \
-          $(wildcard $(UPNP_DIR)/*.c)
+          $(wildcard $(UPNP_DIR)/*.c) \
 
 # 目标文件
 OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SOURCES))
