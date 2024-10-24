@@ -407,34 +407,59 @@
     <action>
       <name>GetStateVariables</name>
       <argumentList>
-        <argument>
-          <name>InstanceID</name>
-          <direction>in</direction>
-          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>StateVariableList</name>
-          <direction>out</direction>
-          <relatedStateVariable>StateVariableList</relatedStateVariable>
-        </argument>
-      </argumentList>
+				<argument>
+					<name>InstanceID</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>StateVariableList</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_StateVariableList</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>StateVariableValuePairs</name>
+					<direction>out</direction>
+					<relatedStateVariable>A_ARG_TYPE_StateVariableValuePairs</relatedStateVariable>
+				</argument>
+			</argumentList>
     </action>
 
     <!-- 设置状态变量 -->
     <action>
       <name>SetStateVariables</name>
-      <argumentList>
-        <argument>
-          <name>InstanceID</name>
-          <direction>in</direction>
-          <relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
-        </argument>
-        <argument>
-          <name>StateVariableValuePairs</name>
-          <direction>in</direction>
-          <relatedStateVariable>StateVariableList</relatedStateVariable>
-        </argument>
-      </argumentList>
+			<argumentList>
+				<argument>
+					<name>InstanceID</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_InstanceID</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>AVTransportUDN</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_DeviceUDN</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>ServiceType</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_ServiceType</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>ServiceId</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_ServiceID</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>StateVariableValuePairs</name>
+					<direction>in</direction>
+					<relatedStateVariable>A_ARG_TYPE_StateVariableValuePairs</relatedStateVariable>
+				</argument>
+				<argument>
+					<name>StateVariableList</name>
+					<direction>out</direction>
+					<relatedStateVariable>A_ARG_TYPE_StateVariableList</relatedStateVariable>
+				</argument>
+			</argumentList>
     </action>
   </actionList>
   
@@ -484,6 +509,12 @@
       </allowedValueList>
     </stateVariable>
 
+    <!-- 录制存储介质 -->
+    <stateVariable sendEvents="no">
+      <name>RecordStorageMedium</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
     <!-- 可能的播放存储介质 -->
     <stateVariable sendEvents="no">
       <name>PossiblePlaybackStorageMedia</name>
@@ -492,6 +523,13 @@
         <allowedValue>NETWORK</allowedValue>
         <allowedValue>LOCAL</allowedValue>
       </allowedValueList>
+    </stateVariable>
+
+
+    <!-- 可能的录制存储介质 -->
+    <stateVariable sendEvents="no">
+      <name>PossibleRecordStorageMedia</name>
+      <dataType>string</dataType>
     </stateVariable>
 
     <!-- 当前播放模式 -->
@@ -664,6 +702,26 @@
       <dataType>string</dataType>
     </stateVariable>
 
+
+    <!-- 录制存储介质写入状态 -->
+    <stateVariable sendEvents="no">
+      <name>RecordMediumWriteStatus</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 当前录制质量模式 -->
+    <stateVariable sendEvents="no">
+      <name>CurrentRecordQualityMode</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 可能的录制质量模式 -->
+    <stateVariable sendEvents="no">
+      <name>PossibleRecordQualityModes</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+
     <!-- 跳转模式 -->
     <stateVariable sendEvents="no">
       <name>A_ARG_TYPE_SeekMode</name>
@@ -700,6 +758,36 @@
     <!-- 录制质量模式 -->
     <stateVariable sendEvents="no">
       <name>A_ARG_TYPE_RecQualityModes</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 设备UDN -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_DeviceUDN</name>
+      <dataType>string</dataType>
+		</stateVariable>
+
+    <!-- 服务类型 -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_ServiceType</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 服务ID -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_ServiceID</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 状态变量值对 -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_StateVariableValuePairs</name>
+      <dataType>string</dataType>
+    </stateVariable>
+
+    <!-- 状态变量列表 -->
+    <stateVariable sendEvents="no">
+      <name>A_ARG_TYPE_StateVariableList</name>
       <dataType>string</dataType>
     </stateVariable>
 
