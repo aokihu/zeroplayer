@@ -5,6 +5,8 @@
  */
 
 #include <gst/gst.h>
+#include <libgupnp/gupnp.h>
+#include <libgupnp-av/gupnp-av.h>
 #include "upnp_callback.h"
 #include "player.h"
 #include "struct.h"
@@ -34,11 +36,40 @@ void on_set_av_transport_uri_action(
                              "CurrentURIMetaData", G_TYPE_STRING, &currentUriMetaData,
                              NULL);
 
+    g_print("CurrentURI: %s\n", currentUri);
+    g_print("CurrentURIMetaData: %s\n", currentUriMetaData);
+
     // 检查参数是否有效
     if (instanceId == NULL || currentUri == NULL)
     {
         gupnp_service_action_return_error(action, 402, "Invalid Args");
         goto cleanup;
+    }
+
+    // 解析MetaData
+    GUPnPDIDLLiteParser *parser = gupnp_didl_lite_parser_new();
+    GError *error = NULL;
+
+    GList *items = gupnp_didl_lite_parser_parse_didl(parser, currentUriMetaData, &error);
+    if (error != NULL)
+    {
+        g_print("Error parsing DIDL: %s\n", error->message);
+        g_error_free(error);
+        goto cleanup;
+    }
+
+    for (GList *item = items; item != NULL; item = g_list_next(item))
+    {
+        GUPnPDIDLLiteObject *object = (GUPnPDIDLLiteObject *)item->data;
+
+        // 获取对象的资源列表
+        GList *resources = gupnp_didl_lite_object_get_resources(object);
+
+        for (GList *resource = resources; resource != NULL; resource = g_list_next(resource))
+        {
+            const gchar *duration = gupnp_didl_lite_resource_get_duration(resource);
+            g_print("Duration: %s\n", duration);
+        }
     }
 
     // 更新状态变量
@@ -343,133 +374,6 @@ cleanup:
 }
 
 /**
- * @brief 获取状态变量的动作回调函数
- * @param service 服务
- * @param action 动作
- * @param user_data 用户数据
- */
-// void on_get_state_variables_action(
-//     GUPnPService *service,
-//     GUPnPServiceAction *action,
-//     gpointer user_data)
-// {
-//     AppContext *appContext = (AppContext *)user_data;
-//     gchar *instanceId = NULL; // Instance ID
-//     gchar *stateVariableList = NULL; // List of state variables to retrieve
-
-//     // Get parameters from the action
-//     gupnp_service_action_get(action,
-//                              "InstanceID", G_TYPE_STRING, &instanceId,
-//                              "StateVariableList", G_TYPE_STRING, &stateVariableList,
-//                              NULL);
-
-//     // Check if parameters are valid
-//     if (instanceId == NULL || stateVariableList == NULL) {
-//         gupnp_service_action_return_error(action, 402, "Invalid Args");
-//         goto cleanup;
-//     }
-
-//     // Parse the state variable list
-//     gchar **variables = g_strsplit(stateVariableList, ",", -1);
-//     GString *stateVariableValuePairs = g_string_new("");
-
-//     for (int i = 0; variables[i] != NULL; i++) {
-//         const gchar *value = gupnp_service_get_state_variable(service, g_strstrip(variables[i]));
-//         if (value != NULL) {
-//             g_string_append_printf(stateVariableValuePairs, "%s=%s,", variables[i], value);
-//         }
-//     }
-
-//     // Remove the trailing comma
-//     if (stateVariableValuePairs->len > 0) {
-//         g_string_truncate(stateVariableValuePairs, stateVariableValuePairs->len - 1);
-//     }
-
-//     // Set the action return value
-//     gupnp_service_action_set(action,
-//                              "StateVariableValuePairs", G_TYPE_STRING, stateVariableValuePairs->str,
-//                              NULL);
-
-//     // Action completed successfully
-//     gupnp_service_action_return_success(action);
-
-//     g_string_free(stateVariableValuePairs, TRUE);
-//     g_strfreev(variables);
-
-// cleanup:
-//     // Free resources
-//     g_free(instanceId);
-//     g_free(stateVariableList);
-// }
-
-// /**
-//  * @brief 设置状态变量的动作回调函数
-//  * @param service 服务
-//  * @param action 动作
-//  * @param user_data 用户数据
-//  */
-// void on_set_state_variables_action(
-//     GUPnPService *service,
-//     GUPnPServiceAction *action,
-//     gpointer user_data)
-// {
-//     AppContext *appContext = (AppContext *)user_data;
-//     gchar *instanceId = NULL; // Instance ID
-//     gchar *stateVariableValuePairs = NULL; // State variable value pairs to set
-
-//     // Get parameters from the action
-//     gupnp_service_action_get(action,
-//                              "InstanceID", G_TYPE_STRING, &instanceId,
-//                              "StateVariableValuePairs", G_TYPE_STRING, &stateVariableValuePairs,
-//                              NULL);
-
-//     // Check if parameters are valid
-//     if (instanceId == NULL || stateVariableValuePairs == NULL) {
-//         gupnp_service_action_return_error(action, 402, "Invalid Args");
-//         goto cleanup;
-//     }
-
-//     // Parse the state variable value pairs
-//     gchar **pairs = g_strsplit(stateVariableValuePairs, ",", -1);
-//     GString *stateVariableList = g_string_new("");
-
-//     for (int i = 0; pairs[i] != NULL; i++) {
-//         gchar **pair = g_strsplit(pairs[i], "=", 2);
-//         if (pair[0] != NULL && pair[1] != NULL) {
-//             gchar *variable = g_strstrip(pair[0]);
-//             gchar *value = g_strstrip(pair[1]);
-
-//             // Attempt to set the state variable
-//             if (gupnp_service_set_state_variable(service, variable, value)) {
-//                 g_string_append_printf(stateVariableList, "%s,", variable);
-//             }
-//         }
-//         g_strfreev(pair);
-//     }
-
-//     // Remove the trailing comma
-//     if (stateVariableList->len > 0) {
-//         g_string_truncate(stateVariableList, stateVariableList->len - 1);
-//     }
-
-//     // Set the action return value
-//     gupnp_service_action_set(action,
-//                              "StateVariableList", G_TYPE_STRING, stateVariableList->str,
-//                              NULL);
-
-//     // Action completed successfully
-//     gupnp_service_action_return_success(action);
-
-//     g_string_free(stateVariableList, TRUE);
-//     g_strfreev(pairs);
-
-// cleanup:
-//     // Free resources
-//     g_free(instanceId);
-//     g_free(stateVariableValuePairs);
-// }
-
-/**
  * @brief 获取当前Transport Actions的动作回调函数
  * @param service 服务
  * @param action 动作
@@ -512,7 +416,7 @@ cleanup:
 }
 
 /**
- * @brief 获取传输信息的动作回��函数
+ * @brief 获取传输信息的动作回函数
  * @param service 服务
  * @param action 动作
  * @param user_data 用户数据
@@ -616,19 +520,19 @@ void on_get_position_info_action(
     // 检查参数是否有效
     if (instanceId == NULL)
     {
-        gupnp_service_action_return_error(action, 402, "无效参数");
+        gupnp_service_action_return_error(action, 402, "Invalid Args: InstanceID");
         goto cleanup;
     }
 
     // 获取位置信息
-    guint track = 1;                                              // 当前曲目编号
-    gchar *trackDuration = "00:00:00";                            // 曲目时长
-    gchar *trackMetaData = "";                                    // 曲目元数据
-    gchar *trackURI = player_get_uri(appContext->player_context); // 曲目URI
-    gchar *relTime = "00:00:00";                                  // 相对时间
-    gchar *absTime = "00:00:00";                                  // 绝对时间
-    gint relCount = 0;                                            // 相对计数
-    gint absCount = 0;                                            // 绝对计数
+    guint track = 1;                                                               // 当前曲目编号
+    gchar *trackDuration = player_get_duration_string(appContext->player_context); // 曲目时长
+    gchar *trackMetaData = "";                                                     // 曲目元数据
+    gchar *trackURI = player_get_uri(appContext->player_context);                  // 曲目URI
+    gchar *relTime = "00:00:00";                                                   // 相对时间
+    gchar *absTime = "00:00:00";                                                   // 绝对时间
+    gint relCount = 0;                                                             // 相对计数
+    gint absCount = 0;                                                             // 绝对计数
 
     // 返回位置信息
     gupnp_service_action_set(action,
@@ -646,6 +550,7 @@ void on_get_position_info_action(
     gupnp_service_action_return_success(action);
 
 cleanup:
+    g_free(trackDuration);
     g_free(instanceId);
 }
 
@@ -672,9 +577,13 @@ void on_set_next_av_transport_uri_action(
     // 检查参数是否有效
     if (instanceId == NULL)
     {
-        gupnp_service_action_return_error(action, 402, "无效参数");
+        gupnp_service_action_return_error(action, 402, "Invalid Args: InstanceID");
         goto cleanup;
     }
+
+    // 保存下一曲的URI和元数据
+    appContext->player_context->next_uri = g_strdup(nextUri);
+    appContext->player_context->next_metadata = g_strdup(nextUriMetaData);
 
     // 更新状态变量
     gupnp_service_notify(service, "NextAVTransportURI", G_TYPE_STRING, nextUri, NULL);

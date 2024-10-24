@@ -244,6 +244,28 @@ gint64 player_get_position(PlayerContext *player_context)
   return pos;
 }
 
+/**
+ * @brief 获取播放器时长
+ * @param player_context 播放器上下文
+ * @return 时长
+ */
+gint64 player_get_duration(PlayerContext *player_context)
+{
+  gint64 duration;
+  gst_element_query_duration(player_context->pipeline, GST_FORMAT_TIME, &duration);
+  return duration;
+}
+
+/**
+ * @brief 获取播放器时长字符串
+ * @param player_context 播放器上下文
+ * @return 时长字符串
+ */
+gchar *player_get_duration_string(PlayerContext *player_context)
+{
+  return player_util_get_timestamp_string(player_get_duration(player_context));
+}
+
 /* ------- 播放器播放进度 ------- */
 
 /**

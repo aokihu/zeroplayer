@@ -9,7 +9,6 @@
 #include "struct.h"
 #include "upnp_service.h"
 
-
 /**
  * @brief Query callback for getting source protocol info
  * @param service The UPnP service
@@ -25,16 +24,11 @@ void on_get_source_protocol_info_query(GUPnPService *service,
     AppContext *appContext = (AppContext *)user_data;
 
     // Define the supported source protocols
-    const char *sourceProtocolInfo = g_strjoinv(",", UPNP_SERVICE_SINK_PROTOCOL); 
+    const char *sourceProtocolInfo = g_strjoinv(",", UPNP_SERVICE_SINK_PROTOCOL);
 
     g_value_init(value, G_TYPE_STRING);
     g_value_set_string(value, sourceProtocolInfo);
-
-    g_print("Source Protocol Info queried: %s\n", sourceProtocolInfo);
 }
-
-
-
 
 /**
  * @brief Query callback for getting sink protocol info
@@ -44,20 +38,15 @@ void on_get_source_protocol_info_query(GUPnPService *service,
  * @param user_data User data (AppContext)
  */
 void on_get_sink_protocol_info_query(GUPnPService *service,
-                                       gchar *variable,
-                                       GValue *value,
-                                       gpointer user_data)
+                                     gchar *variable,
+                                     GValue *value,
+                                     gpointer user_data)
 {
     AppContext *appContext = (AppContext *)user_data;
 
     g_value_init(value, G_TYPE_STRING);
     g_value_set_string(value, "");
-
-    g_print("Sink Protocol Info queried: %s\n", "");
 }
-
-
-
 
 /**
  * @brief Query callback for getting current connection IDs
