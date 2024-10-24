@@ -36,7 +36,7 @@ gint64 player_get_timestamp_from_string(gchar *timestamp)
  * 将gint64类型的时间戳转换为字符串
  *
  * @param timestamp gint64类型的时间戳,单位为毫秒
- * @return gchar* 转换后的时间戳字符串,格式为"HH:MM:SS.mmm"
+ * @return gchar* 转换后的时间戳字符串,格式为"HH:MM:SS"
  */
 gchar *player_util_get_timestamp_string(gint64 timestamp)
 {
@@ -45,7 +45,6 @@ gchar *player_util_get_timestamp_string(gint64 timestamp)
     hours = (gint)(timestamp / 3600000);
     minutes = (gint)((timestamp % 3600000) / 60000);
     seconds = (gint)((timestamp % 60000) / 1000);
-    milliseconds = (gint)(timestamp % 1000);
 
-    return g_strdup_printf("%02d:%02d:%02d.%03d", hours, minutes, seconds, milliseconds);
+    return g_strdup_printf("%02d:%02d:%02d", hours, minutes, seconds);
 }

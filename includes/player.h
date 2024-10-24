@@ -30,8 +30,9 @@ void player_set_volume(PlayerContext *player, gdouble volume);    // Set the vol
 gdouble player_get_volume(PlayerContext *player);                 // Get the volume of the player
 void player_set_position(PlayerContext *player, gint64 position); // Set the position of the player
 gint64 player_get_position(PlayerContext *player);                // Get the position of the player
+gint64 player_get_duration(PlayerContext *player);                // Get the duration of the player
+gchar *player_get_duration_string(PlayerContext *player);         // Get the duration string of the player
 void player_set_mute(PlayerContext *player, gboolean mute);       // Set the mute state of the player
 gboolean player_get_mute(PlayerContext *player);                  // Get the mute state of the player
 gchar *player_get_transport_state(PlayerContext *player);         // Get the transport state of the player
-
-#endif // __ZERO_PLAYER_PLAYER_H__
+#endif                                                            // __ZERO_PLAYER_PLAYER_H__
