@@ -2,8 +2,8 @@
 
 # 编译器设置
 CC = gcc
-CFLAGS = -Wall -Wextra -g $(shell pkg-config --cflags glib-2.0 gstreamer-1.0 gupnp-1.6) -I/usr/local/opt/icu4c/include
-LDFLAGS = $(shell pkg-config --libs glib-2.0 gstreamer-1.0 gupnp-1.6) -L/usr/local/opt/icu4c/lib -licuuc
+CFLAGS = -Wall -Wextra -g $(shell pkg-config --cflags glib-2.0 gstreamer-1.0 gupnp-1.6 gupnp-av-1.0) -I/usr/local/opt/icu4c/include
+LDFLAGS = $(shell pkg-config --libs glib-2.0 gstreamer-1.0 gupnp-1.6 gupnp-av-1.0) -L/usr/local/opt/icu4c/lib -licuuc
 
 # 目录设置
 SRC_DIR = src
