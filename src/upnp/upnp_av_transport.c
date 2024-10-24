@@ -16,7 +16,7 @@ void on_av_transport_service_available(
 
   // 创建服务
   GUPnPServiceInfo *service_info = gupnp_device_info_get_service(GUPNP_DEVICE_INFO(rd),
-                                                                 "urn:schemas-upnp-org:service:AVTransport:3");
+                                                                 "urn:schemas-upnp-org:service:AVTransport:1");
 
   if (service_info)
   {

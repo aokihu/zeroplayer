@@ -6,7 +6,7 @@
   </specVersion>
   <device>
     <!-- 设备类型 -->
-    <deviceType>urn:schemas-upnp-org:device:MediaRenderer:3</deviceType>
+    <deviceType>urn:schemas-upnp-org:device:MediaRenderer:1</deviceType>
     
     <!-- 友好名称，控制点将显示该名称 -->
     <friendlyName>ZeroPlayer</friendlyName>
@@ -49,7 +49,7 @@
     <serviceList>
       <!-- AVTransport 服务 -->
       <service>
-        <serviceType>urn:schemas-upnp-org:service:AVTransport:3</serviceType>
+        <serviceType>urn:schemas-upnp-org:service:AVTransport:1</serviceType>
         <serviceId>urn:upnp-org:serviceId:AVTransport</serviceId>
         <SCPDURL>/AVTransport.xml</SCPDURL>
         <controlURL>/upnp/control/AVTransport</controlURL>
@@ -58,7 +58,7 @@
       
       <!-- RenderingControl 服务 -->
       <service>
-        <serviceType>urn:schemas-upnp-org:service:RenderingControl:3</serviceType>
+        <serviceType>urn:schemas-upnp-org:service:RenderingControl:1</serviceType>
         <serviceId>urn:upnp-org:serviceId:RenderingControl</serviceId>
         <SCPDURL>/RenderingControl.xml</SCPDURL>
         <controlURL>/upnp/control/RenderingControl</controlURL>
@@ -67,7 +67,7 @@
       
       <!-- ConnectionManager 服务 -->
       <service>
-        <serviceType>urn:schemas-upnp-org:service:ConnectionManager:3</serviceType>
+        <serviceType>urn:schemas-upnp-org:service:ConnectionManager:1</serviceType>
         <serviceId>urn:upnp-org:serviceId:ConnectionManager</serviceId>
         <SCPDURL>/ConnectionManager.xml</SCPDURL>
         <controlURL>/upnp/control/ConnectionManager</controlURL>
