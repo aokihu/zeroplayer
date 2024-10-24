@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root xmlns="urn:schemas-upnp-org:device-1-0">
+<root xmlns="urn:schemas-upnp-org:device-1-0" xmlns:dlna="urn:schemas-dlna-org:device-1-0">
   <specVersion>
     <major>1</major>
     <minor>0</minor>
@@ -22,7 +22,10 @@
     <modelURL>http://www.aokihu.com/zeroplayer</modelURL>
     
     <!-- 设备UUID -->
-    <UDN>uuid:com.aokihu.ZeroPlayer</UDN>
+    <UDN>uuid:550e8400-e29b-41d4-a716-446655440000</UDN>
+
+
+    <dlna:X_DLNADOC>DMR-1.50</dlna:X_DLNADOC>
     
     <!-- 图标列表（可选） -->
     <iconList>
