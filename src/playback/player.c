@@ -256,9 +256,26 @@ gint64 player_get_position(PlayerContext *player_context)
   {
     g_warning("Failed to get position");
   }
-
-  g_print("Position: %" G_GINT64_FORMAT "\n", pos);
+  
   return pos;
+}
+
+/**
+ * @brief 获取播放器位置字符串
+ * @param player_context 播放器上下文
+ * @return 位置字符串 "HH:MM:SS"
+ */
+gchar *player_get_position_string(PlayerContext *player_context)
+{
+  gint64 position_ns = player_get_position(player_context); // 您的 gint64 变量，单位为纳秒
+  gint64 total_seconds = position_ns / GST_SECOND;
+
+  gint hours = total_seconds / 3600;
+  gint minutes = (total_seconds % 3600) / 60;
+  gint seconds = total_seconds % 60;
+
+  gchar *position_str = g_strdup_printf("%02d:%02d:%02d", hours, minutes, seconds);
+  return position_str;
 }
 
 /**
