@@ -171,6 +171,7 @@ static void parse_didl_lite_metadata(const char *metadata, AppContext *app_conte
                                     XML_PARSE_NOERROR | XML_PARSE_NOWARNING | XML_PARSE_NSCLEAN);
     if (!doc) {
         g_print("Failed to parse DIDL-Lite XML\n");
+        free(fixed_metadata);  // 添加这行来释放内存
         return;
     }
 
@@ -184,31 +185,36 @@ static void parse_didl_lite_metadata(const char *metadata, AppContext *app_conte
     gchar *song_id = get_node_text(doc, "//qq:songID");
 
     // 打印调试信息
+    g_print("Parse Metadata:\n");
     g_print("Title: %s\n", title ? title : "Unknown");
     g_print("Creator: %s\n", creator ? creator : "Unknown");
     g_print("Album: %s\n", album ? album : "Unknown");
-    g_print("Album Art: %s\n", album_art ? album_art : "Unknown");
-    g_print("Song ID: %s\n", song_id ? song_id : "Unknown");
-    g_print("Resource URL: %s\n", res_url ? res_url : "Unknown");
+    g_print("AlbumArtURI: %s\n", album_art ? album_art : "Unknown");
+    g_print("QQSongID: %s\n", song_id ? song_id : "Unknown");
+    g_print("ResourceURL: %s\n", res_url ? res_url : "Unknown");
     g_print("Duration: %s\n", duration ? duration : "Unknown");
 
     // 更新播放器上下文
     if (app_context->player_context) {
-        // if (res_url) {
-        //     player_set_uri(app_context->player_context, res_url);
-        // }
-        // if (title) {
-        //     player_set_title(app_context->player_context, title);
-        // }
-        // if (creator) {
-        //     player_set_artist(app_context->player_context, creator);
-        // }
-        // if (album) {
-        //     player_set_album(app_context->player_context, album);
-        // }
-        // if (album_art) {
-        //     player_set_album_art(app_context->player_context, album_art);
-        // }
+        // 保存原始元数据
+        player_set_metadata(app_context->player_context, fixed_metadata);
+        
+        // 更新各个元数据字段
+        if (song_id) {
+            player_set_qq_song_id(app_context->player_context, song_id);
+        }
+        if (duration) {
+            player_set_current_track_duration(app_context->player_context, duration);
+        }
+        if (title) {
+            player_set_current_track_title(app_context->player_context, title);
+        }
+        if (creator) {
+            player_set_current_track_artist(app_context->player_context, creator);
+        }
+        if (album) {
+            player_set_current_track_album(app_context->player_context, album);
+        }
     }
 
     // 释放资源
@@ -219,7 +225,9 @@ static void parse_didl_lite_metadata(const char *metadata, AppContext *app_conte
     g_free(song_id);
     g_free(res_url);
     g_free(duration);
+    free(fixed_metadata);  // 释放修复后的元数据
     xmlFreeDoc(doc);
+    xmlCleanupParser();  // 清理 XML 解析器
 }
 
 

@@ -41,21 +41,38 @@ typedef struct
   gchar *currentConnectionIDs;
 } UPnPContext;
 
+// 播放器元数据结构体
+typedef struct
+{
+  gchar *metadata;       // 元数据
+  gchar *qq_song_id;     // QQ音乐歌曲ID
+  gchar *duration;       // 时长
+  gchar *title;         // 标题
+  gchar *artist;        // 艺术家
+  gchar *album;         // 专辑
+} PlayerMetadata;
+
+
 /**
  * Player Context
  * @property uri - URI
  * @property metadata - 当前资源元数据
+ * @property qq_song_id - 当前资源QQ音乐ID
+ * @property current_track_duration - 当前资源时长
+ * @property current_track_title - 当前资源标题
+ * @property current_track_artist - 当前资源艺术家
+ * @property current_track_album - 当前资源专辑
  * @property next_uri - 下一个资源
  * @property next_metadata - 下一个资源元数据
  * @property pipeline - GStreamer Pipeline
  */
 typedef struct
 {
-  gchar *uri;
-  gchar *metadata;
-  gchar *next_uri;
-  gchar *next_metadata;
-  GstElement *pipeline;
+  GstElement *pipeline;  // GStreamer管道
+  gchar *uri;           // 当前播放URI
+  gchar *next_uri;      // 下一个播放URI
+  PlayerMetadata current_track_metadata;  // 当前曲目元数据
+  PlayerMetadata next_track_metadata;    // 下一个曲目元数据
 } PlayerContext;
 
 /**

@@ -15,6 +15,14 @@ PlayerContext *player_new(void)
 {
   PlayerContext *player_context = g_new0(PlayerContext, 1);
 
+  // 初始化 PlayerMetadata
+  player_context->current_track_metadata.metadata = NULL;
+  player_context->current_track_metadata.qq_song_id = NULL;
+  player_context->current_track_metadata.duration = NULL;
+  player_context->current_track_metadata.title = NULL;
+  player_context->current_track_metadata.artist = NULL;
+  player_context->current_track_metadata.album = NULL;
+
   // 设置播放器上下文的URI
   player_context->uri = NULL;
   player_context->next_uri = NULL;
@@ -37,6 +45,15 @@ void player_free(
   gst_object_unref(player_context->pipeline);
   g_free(player_context->uri);
   g_free(player_context->next_uri);
+  
+  // 释放 PlayerMetadata 中的内存
+  g_free(player_context->current_track_metadata.metadata);
+  g_free(player_context->current_track_metadata.qq_song_id);
+  g_free(player_context->current_track_metadata.duration);
+  g_free(player_context->current_track_metadata.title);
+  g_free(player_context->current_track_metadata.artist);
+  g_free(player_context->current_track_metadata.album);
+  
   g_free(player_context);
 }
 
@@ -279,3 +296,140 @@ void player_seek(
 {
   g_object_set(player_context->pipeline, "position", position, NULL);
 }
+
+
+/* ------- 播放器元数据 ------- */
+
+/**
+ * @brief 设置当前播放的QQ音乐歌曲ID
+ * @param player_context 播放器上下文
+ * @param song_id QQ音乐歌曲ID
+ */
+void player_set_qq_song_id(
+    PlayerContext *player_context,
+    const gchar *song_id)
+{
+  g_free(player_context->current_track_metadata.qq_song_id);
+  player_context->current_track_metadata.qq_song_id = g_strdup(song_id);
+}
+
+/**
+ * @brief 设置当前曲目的时长
+ * @param player_context 播放器上下文
+ * @param duration 时长
+ */
+void player_set_current_track_duration(
+    PlayerContext *player_context,
+    const gchar *duration)
+{
+  g_free(player_context->current_track_metadata.duration);
+  player_context->current_track_metadata.duration = g_strdup(duration);
+}
+
+/**
+ * @brief 设置当前曲目的标题
+ * @param player_context 播放器上下文
+ * @param title 标题
+ */
+void player_set_current_track_title(
+    PlayerContext *player_context,
+    const gchar *title)
+{
+  g_free(player_context->current_track_metadata.title);
+  player_context->current_track_metadata.title = g_strdup(title);
+}
+
+/**
+ * @brief 设置当前曲目的艺术家
+ * @param player_context 播放器上下文
+ * @param artist 艺术家
+ */
+void player_set_current_track_artist(
+    PlayerContext *player_context,
+    const gchar *artist)
+{
+  g_free(player_context->current_track_metadata.artist);
+  player_context->current_track_metadata.artist = g_strdup(artist);
+}
+
+/**
+ * @brief 设置当前曲目的专辑名
+ * @param player_context 播放器上下文
+ * @param album 专辑名
+ */
+void player_set_current_track_album(
+    PlayerContext *player_context,
+    const gchar *album)
+{
+  g_free(player_context->current_track_metadata.album);
+  player_context->current_track_metadata.album = g_strdup(album);
+}
+
+/**
+ * @brief 获取QQ音乐歌曲ID
+ * @param player_context 播放器上下文
+ * @return QQ音乐歌曲ID
+ */
+gchar *player_get_qq_song_id(PlayerContext *player_context)
+{
+  return player_context->current_track_metadata.qq_song_id;
+}
+
+/**
+ * @brief 获取当前曲目时长
+ * @param player_context 播放器上下文
+ * @return 当前曲目时长
+ */
+gchar *player_get_current_track_duration(PlayerContext *player_context)
+{
+  return player_context->current_track_metadata.duration;
+}
+
+/**
+ * @brief 设置原始元数据
+ * @param player_context 播放器上下文
+ * @param metadata 元数据
+ */
+void player_set_metadata(
+    PlayerContext *player_context,
+    const gchar *metadata)
+{
+    g_free(player_context->current_track_metadata.metadata);
+    player_context->current_track_metadata.metadata = g_strdup(metadata);
+}
+
+/**
+ * @brief 获取原始元数据
+ * @param player_context 播放器上下文
+ * @return 元数据
+ */
+gchar *player_get_metadata(PlayerContext *player_context)
+{
+    return player_context->current_track_metadata.metadata;
+}
+
+/* ------- 下一个曲目 ------- */
+
+/**
+ * @brief 设置下一个曲目元数据
+ * @param player_context 播放器上下文
+ * @param metadata 元数据
+ */
+void player_set_next_metadata(
+    PlayerContext *player_context,
+    const gchar *metadata)
+{
+  g_free(player_context->next_track_metadata.metadata);
+  player_context->next_track_metadata.metadata = g_strdup(metadata);
+}
+
+/**
+ * @brief 获取下一个曲目元数据
+ * @param player_context 播放器上下文
+ * @return 元数据
+ */
+gchar *player_get_next_metadata(PlayerContext *player_context)
+{
+  return player_context->next_track_metadata.metadata;
+}
+
