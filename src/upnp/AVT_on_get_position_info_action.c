@@ -10,7 +10,6 @@
 #include "upnp_service.h"
 #include "player.h"
 
-
 /**
  * @brief 获取位置信息的动作回调函数
  */
@@ -35,15 +34,14 @@ void on_get_position_info_action(
     // }
 
     // 获取位置信息
-    guint track = 1;                                                               // 当前曲目编号
-    gchar *trackDuration = player_get_current_track_duration(appContext->player_context);     // 曲目时长
-    gchar *trackMetaData = player_get_metadata(appContext->player_context);                   // 曲目元数据
-    gchar *trackURI = appContext->player_context->uri;                             // 曲目URI
-    gchar *relTime = player_get_position_string(appContext->player_context);                                                   // 绝对时间
-    gchar *absTime = relTime;                                                   // 相对时间
-    gint relCount = 0;                                                             // 相对计数
-    gint absCount = 0;                                                             // 绝对计数
-
+    guint track = 1;                                                                      // 当前曲目编号
+    gchar *trackDuration = player_get_current_track_duration(appContext->player_context); // 曲目时长
+    gchar *trackMetaData = player_get_metadata(appContext->player_context);               // 曲目元数据
+    gchar *trackURI = appContext->player_context->uri;                                    // 曲目URI
+    gchar *relTime = player_get_position_string(appContext->player_context);              // 绝对时间
+    gchar *absTime = relTime;                                                             // 相对时间
+    gint relCount = 0;                                                                    // 相对计数
+    gint absCount = 0;                                                                    // 绝对计数
 
     // 返回位置信息
     gupnp_service_action_set(action,
