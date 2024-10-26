@@ -12,21 +12,20 @@
 /**
  * 将时间戳字符串转换为gint64类型的时间戳
  *
- * @param timestamp 时间戳字符串,格式为"HH:MM:SS"或"HH:MM:SS.mmm"
+ * @param timestamp 时间戳字符串,格式为"HH:MM:SS"
  * @return gint64* 指向转换后的时间戳的指针,如果转换失败则返回NULL
  */
 gint64 player_get_timestamp_from_string(gchar *timestamp)
 {
-    gint hours, minutes, seconds, milliseconds = 0;
-    gint64 result = 0;
+    gint hours, minutes, seconds;
+    gint64 total_seconds = 0;
 
-    if (sscanf(timestamp, "%d:%d:%d.%d", &hours, &minutes, &seconds, &milliseconds) >= 3)
+    if (sscanf(timestamp, "%d:%d:%d", &hours, &minutes, &seconds) == 3)
     {
-        result = (gint64)hours * 3600000 +
-                 (gint64)minutes * 60000 +
-                 (gint64)seconds * 1000 +
-                 (gint64)milliseconds;
-        return result;
+        total_seconds = (gint64)hours * 3600 +
+                        (gint64)minutes * 60 +
+                        (gint64)seconds;
+        return total_seconds * GST_SECOND;
     }
 
     return -1; // 如果转换失败,返回-1表示错误

@@ -45,7 +45,7 @@ void player_free(
   gst_object_unref(player_context->pipeline);
   g_free(player_context->uri);
   g_free(player_context->next_uri);
-  
+
   // 释放 PlayerMetadata 中的内存
   g_free(player_context->current_track_metadata.metadata);
   g_free(player_context->current_track_metadata.qq_song_id);
@@ -53,7 +53,7 @@ void player_free(
   g_free(player_context->current_track_metadata.title);
   g_free(player_context->current_track_metadata.artist);
   g_free(player_context->current_track_metadata.album);
-  
+
   g_free(player_context);
 }
 
@@ -256,7 +256,7 @@ gint64 player_get_position(PlayerContext *player_context)
   {
     g_warning("Failed to get position");
   }
-  
+
   return pos;
 }
 
@@ -305,15 +305,29 @@ gchar *player_get_duration_string(PlayerContext *player_context)
 /**
  * @brief 设置播放器播放进度
  * @param player_context 播放器上下文
- * @param position 进度
+ * @param position 进度(纳秒)
  */
 void player_seek(
     PlayerContext *player_context,
     gint64 position)
 {
-  g_object_set(player_context->pipeline, "position", position, NULL);
-}
+  g_print("Seeking to position: %" G_GINT64_FORMAT " ns\n", position);
 
+  // 使用gst_element_seek执行seek操作
+  gboolean result = gst_element_seek(player_context->pipeline,
+                                     1.0,                  // 正常播放速率
+                                     GST_FORMAT_TIME,      // 使用时间格式
+                                     GST_SEEK_FLAG_FLUSH,  // 跳过缓冲区
+                                     GST_SEEK_TYPE_SET,    // 设置绝对位置
+                                     position,             // 目标位置
+                                     GST_SEEK_TYPE_NONE,   // 不设置结束位置
+                                     GST_CLOCK_TIME_NONE); // 无结束时间
+
+  if (!result)
+  {
+    g_warning("Failed to seek to position: %" G_GINT64_FORMAT " ns", position);
+  }
+}
 
 /* ------- 播放器元数据 ------- */
 
@@ -411,8 +425,8 @@ void player_set_metadata(
     PlayerContext *player_context,
     const gchar *metadata)
 {
-    g_free(player_context->current_track_metadata.metadata);
-    player_context->current_track_metadata.metadata = g_strdup(metadata);
+  g_free(player_context->current_track_metadata.metadata);
+  player_context->current_track_metadata.metadata = g_strdup(metadata);
 }
 
 /**
@@ -422,7 +436,7 @@ void player_set_metadata(
  */
 gchar *player_get_metadata(PlayerContext *player_context)
 {
-    return player_context->current_track_metadata.metadata;
+  return player_context->current_track_metadata.metadata;
 }
 
 /* ------- 下一个曲目 ------- */
@@ -449,4 +463,3 @@ gchar *player_get_next_metadata(PlayerContext *player_context)
 {
   return player_context->next_track_metadata.metadata;
 }
-
