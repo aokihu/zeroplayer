@@ -23,6 +23,12 @@ PlayerContext *player_new(void)
   player_context->current_track_metadata.artist = NULL;
   player_context->current_track_metadata.album = NULL;
 
+  // 设置默认音量
+  player_context->volume = 60;
+
+  // 设置默认静音
+  player_context->mute = FALSE;
+
   // 设置播放器上下文的URI
   player_context->uri = NULL;
   player_context->next_uri = NULL;
@@ -30,6 +36,9 @@ PlayerContext *player_new(void)
   // 创建播放器管道
   GstElement *pipeline = gst_element_factory_make("playbin3", PLAYBIN_NAME);
   player_context->pipeline = pipeline;
+
+  // 设置播放器音量
+  player_set_volume(player_context, player_context->volume);
 
   return player_context;
 }
@@ -182,20 +191,29 @@ gchar *player_get_transport_state(PlayerContext *player_context)
  */
 void player_set_volume(
     PlayerContext *player_context,
-    gdouble volume)
+    gint volume)
 {
-  g_object_set(player_context->pipeline, "volume", volume, NULL);
+  gdouble volume_double = (gdouble)volume / 100;
+  player_context->volume = volume;
+  g_object_set(player_context->pipeline, "volume", volume_double, NULL);
 }
 
 /**
  * @brief 获取播放器音量
  * @param player_context 播放器上下文
  * @return 音量
+ * @description 获取音量后将音量乘以100然后转换为整数,并设置到播放器上下文中volume属性
+ *              直接获取的音量是0-1之间的浮点数
  */
 gdouble player_get_volume(PlayerContext *player_context)
 {
   gdouble volume;
   g_object_get(player_context->pipeline, "volume", &volume, NULL);
+
+  // 将音量乘以100然后转换为整数
+  volume *= 100;
+  player_context->volume = (gint)volume;
+
   return volume;
 }
 

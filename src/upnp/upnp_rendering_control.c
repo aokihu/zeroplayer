@@ -19,6 +19,12 @@ void on_rendering_control_service_available(
   {
     GUPnPService *service = GUPNP_SERVICE(service_info);
 
+    // 设置服务回调
+    CONNECT_ACTION(GetVolume, on_get_volume_action);
+    CONNECT_ACTION(SetVolume, on_set_volume_action);
+    CONNECT_ACTION(GetMute, on_get_mute_action);
+    CONNECT_ACTION(SetMute, on_set_mute_action);
+
     g_print("RenderingControl Ready.\n");
   }
   else
