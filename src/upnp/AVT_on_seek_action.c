@@ -55,6 +55,9 @@ void on_seek_action(
       goto cleanup;
     }
     player_seek(appContext->player_context, target_ns);
+
+    // Update relative time position
+    gupnp_service_notify(service, "RelativeTimePosition", G_TYPE_STRING, target, NULL);
   }
   else if (g_strcmp0(unit, "ABS_TIME") == 0)
   {
@@ -73,12 +76,6 @@ void on_seek_action(
     gupnp_service_action_return_error(action, 710, "Seek mode not supported");
     goto cleanup;
   }
-
-  // Update relative time position
-  gint64 position = player_get_position(appContext->player_context);
-  gchar *position_str = player_util_get_timestamp_string(position);
-  gupnp_service_notify(service, "RelativeTimePosition", G_TYPE_STRING, position_str, NULL);
-  g_free(position_str);
 
   // Action completed successfully
   gupnp_service_action_return_success(action);
